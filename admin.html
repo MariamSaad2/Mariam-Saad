@@ -3,690 +3,876 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mariam Saad — Portfolio Admin</title>
+<title>Admin Panel — Mariam's Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --black: #08080a;
-  --deep: #0d0d12;
-  --card: #111118;
-  --purple: #7c3aed;
-  --pl: #a855f7;
-  --pg: rgba(124,58,237,.3);
-  --ps: rgba(168,85,247,.12);
-  --white: #f8f6ff;
-  --gray: #9999b3;
-  --border: rgba(124,58,237,.2);
-  --green: #22c55e;
-  --red: #ef4444;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--black);color:var(--white);font-family:'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.6;}
+  :root {
+    --black: #08080a; --deep: #0d0d12; --card: #111118; --card2: #16161f;
+    --purple: #7c3aed; --pl: #a855f7; --pg: rgba(124,58,237,.3);
+    --ps: rgba(168,85,247,.12); --white: #f8f6ff; --gray: #9999b3;
+    --border: rgba(124,58,237,.2); --border2: rgba(255,255,255,.06);
+    --success: #22c55e; --danger: #ef4444; --warn: #f59e0b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--black);color:var(--white);font-family:'DM Sans',system-ui,sans-serif;font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden;}
 
-/* TOP BAR */
-.topbar{position:sticky;top:0;z-index:100;background:rgba(8,8,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
-.topbar-logo{font-weight:800;font-size:16px;background:linear-gradient(135deg,var(--white),var(--pl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.topbar-actions{display:flex;align-items:center;gap:10px;}
-.gh-status{font-size:11px;color:var(--gray);padding:4px 10px;border:1px solid var(--border);border-radius:20px;}
-.gh-status.ok{color:var(--green);border-color:rgba(34,197,94,.3);}
-.gh-status.err{color:var(--red);border-color:rgba(239,68,68,.3);}
-.save-btn{background:var(--purple);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s;}
-.save-btn:hover{opacity:.85;}
-.save-btn:disabled{opacity:.4;cursor:not-allowed;}
+  /* ── PASSWORD GATE ── */
+  #gate{position:fixed;inset:0;background:var(--black);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .gate-box{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:48px 40px;width:100%;max-width:400px;text-align:center;}
+  .gate-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;background:linear-gradient(135deg,var(--white),var(--pl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+  .gate-sub{color:var(--gray);font-size:13px;margin-bottom:32px;}
+  .gate-box h2{font-family:'Syne',sans-serif;font-size:22px;margin-bottom:24px;}
+  .gate-err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 14px;color:#fca5a5;font-size:13px;margin-bottom:16px;display:none;}
 
-/* LAYOUT */
-.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 57px);}
+  /* ── INPUTS ── */
+  .field{margin-bottom:16px;text-align:left;}
+  .field label{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:6px;}
+  .field input,.field textarea,.field select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;transition:border-color .2s;}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--purple);background:rgba(124,58,237,.06);}
+  .field textarea{resize:vertical;min-height:80px;}
+  .field input[type="password"]{letter-spacing:.1em;}
 
-/* SIDEBAR */
-.sidebar{background:var(--deep);border-right:1px solid var(--border);padding:20px 0;}
-.sidebar-section{margin-bottom:24px;}
-.sidebar-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#555;padding:0 16px;margin-bottom:8px;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;color:var(--gray);font-size:13px;border-left:2px solid transparent;transition:all .2s;}
-.nav-item:hover{color:var(--white);background:rgba(124,58,237,.06);}
-.nav-item.active{color:var(--pl);border-left-color:var(--pl);background:rgba(124,58,237,.08);}
-.nav-item .icon{font-size:15px;width:20px;text-align:center;}
+  /* ── BUTTONS ── */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 22px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all .2s;min-height:44px;}
+  .btn-primary{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;box-shadow:0 0 20px var(--pg);}
+  .btn-primary:hover{box-shadow:0 0 30px rgba(124,58,237,.5);transform:translateY(-1px);}
+  .btn-ghost{background:transparent;color:var(--gray);border:1px solid var(--border2);}
+  .btn-ghost:hover{border-color:var(--purple);color:var(--pl);}
+  .btn-danger{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid rgba(239,68,68,.25);}
+  .btn-danger:hover{background:rgba(239,68,68,.2);}
+  .btn-success{background:rgba(34,197,94,.12);color:#86efac;border:1px solid rgba(34,197,94,.25);}
+  .btn-success:hover{background:rgba(34,197,94,.2);}
+  .btn-sm{padding:6px 14px;font-size:12px;min-height:32px;border-radius:7px;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;transform:none !important;}
+  .btn-full{width:100%;}
 
-/* MAIN */
-.main{padding:28px 32px;overflow-y:auto;}
-.page{display:none;}
-.page.active{display:block;}
+  /* ── LAYOUT ── */
+  #app{display:none;min-height:100vh;}
+  #app.visible{display:block;}
 
-/* GH CONFIG */
-.gh-config{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:28px;}
-.gh-config-title{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--pl);margin-bottom:16px;}
-.gh-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
-.gh-grid-full{grid-column:1/-1;}
+  header{position:sticky;top:0;z-index:100;background:rgba(8,8,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .hdr-left{display:flex;align-items:center;gap:14px;}
+  .hdr-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;background:linear-gradient(135deg,var(--white),var(--pl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .hdr-badge{background:var(--ps);border:1px solid var(--border);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--pl);}
+  .hdr-right{display:flex;align-items:center;gap:10px;}
+  .hdr-right a{color:var(--gray);text-decoration:none;font-size:13px;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;transition:.2s;}
+  .hdr-right a:hover{color:var(--pl);background:var(--ps);}
 
-/* FORM ELEMENTS */
-.field{margin-bottom:16px;}
-.label{font-size:11px;font-weight:500;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;display:block;}
-input[type=text],input[type=email],input[type=password],input[type=url],textarea,select{
-  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;
-  color:var(--white);font-size:13px;padding:9px 12px;font-family:inherit;transition:border-color .2s;
-}
-input:focus,textarea:focus{outline:none;border-color:var(--purple);}
-textarea{resize:vertical;min-height:80px;}
+  .layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px);}
+  @media(max-width:768px){.layout{grid-template-columns:1fr;} .sidebar{display:none;}}
 
-/* SECTION CARDS */
-.section-title{font-size:20px;font-weight:700;margin-bottom:6px;}
-.section-sub{color:var(--gray);font-size:13px;margin-bottom:24px;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-.card-title{font-size:13px;font-weight:600;color:var(--pl);}
-.del-btn{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:var(--red);border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer;transition:all .2s;}
-.del-btn:hover{background:rgba(239,68,68,.2);}
-.add-btn{display:flex;align-items:center;gap:8px;background:var(--ps);border:1px solid var(--border);border-radius:8px;color:var(--pl);font-size:13px;padding:10px 16px;cursor:pointer;transition:all .2s;margin-top:4px;}
-.add-btn:hover{border-color:var(--purple);}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  /* ── SIDEBAR ── */
+  .sidebar{background:var(--deep);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+  .sidebar-section{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#444;padding:16px 20px 6px;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:var(--gray);font-size:13px;font-weight:400;transition:.15s;border-left:2px solid transparent;position:relative;}
+  .nav-item:hover{color:var(--white);background:rgba(255,255,255,.03);}
+  .nav-item.active{color:var(--pl);background:var(--ps);border-left-color:var(--purple);}
+  .nav-item .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.6;flex-shrink:0;}
 
-/* TAGS */
-.tags-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
-.tag-pill{display:flex;align-items:center;gap:6px;background:var(--ps);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:12px;color:var(--pl);}
-.tag-pill button{background:none;border:none;cursor:pointer;color:var(--gray);font-size:14px;line-height:1;padding:0;}
-.tag-input-row{display:flex;gap:8px;margin-top:10px;}
-.tag-input-row input{flex:1;}
+  /* ── MAIN CONTENT ── */
+  .main{padding:28px;overflow-y:auto;}
+  .section-panel{display:none;}
+  .section-panel.active{display:block;}
 
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:999;transform:translateY(80px);opacity:0;transition:all .3s;}
-.toast.success{background:#15803d;color:#fff;transform:translateY(0);opacity:1;}
-.toast.error{background:#b91c1c;color:#fff;transform:translateY(0);opacity:1;}
+  .panel-header{margin-bottom:24px;}
+  .panel-header h1{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:4px;}
+  .panel-header p{color:var(--gray);font-size:13px;}
 
-/* RESULTS TABLE */
-.results-row{display:grid;grid-template-columns:60px 100px 1fr;gap:12px;align-items:center;}
+  .card{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:24px;margin-bottom:16px;}
+  .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border2);}
+  .card-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;}
+  .card-title .icon{font-size:18px;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:600px){.grid-2{grid-template-columns:1fr;}}
+
+  /* ── ARRAY ITEMS ── */
+  .array-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+  .array-item{background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:10px;padding:14px;position:relative;}
+  .array-item-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .array-item-label{font-size:11px;font-weight:600;color:var(--pl);text-transform:uppercase;letter-spacing:.08em;}
+  .array-item-actions{display:flex;gap:6px;}
+  .remove-btn{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;transition:.2s;}
+  .remove-btn:hover{background:rgba(239,68,68,.2);}
+  .add-btn{display:flex;align-items:center;gap:6px;background:rgba(124,58,237,.1);border:1px dashed rgba(124,58,237,.3);color:var(--pl);border-radius:10px;padding:10px 16px;font-size:13px;cursor:pointer;width:100%;justify-content:center;transition:.2s;}
+  .add-btn:hover{background:rgba(124,58,237,.18);border-color:rgba(124,58,237,.6);}
+  .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .tag-chip{display:flex;align-items:center;gap:6px;background:var(--ps);border:1px solid var(--border);border-radius:100px;padding:5px 12px;font-size:12px;color:var(--pl);}
+  .tag-chip .del{cursor:pointer;opacity:.6;transition:.2s;font-size:14px;}
+  .tag-chip .del:hover{opacity:1;color:#fca5a5;}
+  .tag-input-row{display:flex;gap:8px;}
+  .tag-input-row input{flex:1;}
+
+  /* ── TOAST ── */
+  #toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+  .toast{background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;font-size:13px;box-shadow:0 8px 32px rgba(0,0,0,.4);transform:translateX(120%);transition:transform .35s cubic-bezier(.34,1.56,.64,1);pointer-events:auto;min-width:220px;}
+  .toast.show{transform:translateX(0);}
+  .toast.success{border-color:rgba(34,197,94,.3);} .toast.success .t-icon{color:var(--success);}
+  .toast.error{border-color:rgba(239,68,68,.3);} .toast.error .t-icon{color:var(--danger);}
+  .toast.info{border-color:var(--border);} .toast.info .t-icon{color:var(--pl);}
+
+  /* ── CONFIRM DIALOG ── */
+  #confirm-overlay{position:fixed;inset:0;background:rgba(8,8,10,.85);backdrop-filter:blur(8px);z-index:9998;display:none;align-items:center;justify-content:center;padding:20px;}
+  #confirm-overlay.open{display:flex;}
+  .confirm-box{background:var(--card);border:1px solid rgba(239,68,68,.3);border-radius:20px;padding:32px;max-width:380px;width:100%;text-align:center;}
+  .confirm-box h3{font-family:'Syne',sans-serif;font-size:18px;margin-bottom:10px;}
+  .confirm-box p{color:var(--gray);font-size:13px;margin-bottom:24px;}
+  .confirm-actions{display:flex;gap:10px;justify-content:center;}
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar{width:5px;height:5px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:rgba(124,58,237,.3);border-radius:10px;}
+
+  /* ── MISC ── */
+  .divider{height:1px;background:var(--border2);margin:20px 0;}
+  .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--success);display:inline-block;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+  .save-bar{position:sticky;bottom:0;background:rgba(8,8,10,.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:50;}
+  .save-bar p{color:var(--gray);font-size:12px;}
+  .unsaved-indicator{color:var(--warn);font-size:12px;display:flex;align-items:center;gap:6px;}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-logo">MS. Admin Panel</div>
-  <div class="topbar-actions">
-    <span class="gh-status" id="ghStatus">Not connected</span>
-    <button class="save-btn" id="saveBtn" onclick="saveToGitHub()">💾 Save to GitHub</button>
+<!-- PASSWORD GATE -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-logo">MS.</div>
+    <div class="gate-sub">Portfolio Admin Panel</div>
+    <h2>🔐 Enter Password</h2>
+    <div class="gate-err" id="gate-err">Incorrect password. Please try again.</div>
+    <div class="field">
+      <label>Admin Password</label>
+      <input type="password" id="pw-input" placeholder="Enter password…" onkeydown="if(event.key==='Enter')checkPw()">
+    </div>
+    <button class="btn btn-primary btn-full" onclick="checkPw()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Unlock Admin
+    </button>
+    <p style="margin-top:16px;font-size:11px;color:#444;">Default password: <code style="color:var(--pl)">mariam2025</code></p>
   </div>
 </div>
 
-<div class="layout">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Setup</div>
-      <div class="nav-item active" onclick="showPage('github')"><span class="icon">⚙️</span> GitHub Config</div>
+<!-- MAIN APP -->
+<div id="app">
+  <header>
+    <div class="hdr-left">
+      <div class="hdr-logo">MS. Admin</div>
+      <div class="hdr-badge"><span class="badge-dot"></span> Live</div>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Content</div>
-      <div class="nav-item" onclick="showPage('hero')"><span class="icon">🏠</span> Hero Section</div>
-      <div class="nav-item" onclick="showPage('stats')"><span class="icon">📊</span> Stats Numbers</div>
-      <div class="nav-item" onclick="showPage('about')"><span class="icon">👤</span> About Me</div>
-      <div class="nav-item" onclick="showPage('services')"><span class="icon">🛠️</span> Services</div>
-      <div class="nav-item" onclick="showPage('process')"><span class="icon">🔄</span> My Process</div>
-      <div class="nav-item" onclick="showPage('work')"><span class="icon">💼</span> Work Cases</div>
-      <div class="nav-item" onclick="showPage('results')"><span class="icon">🏆</span> Results</div>
-      <div class="nav-item" onclick="showPage('testimonial')"><span class="icon">💬</span> Testimonial</div>
-      <div class="nav-item" onclick="showPage('contact')"><span class="icon">📱</span> Contact Links</div>
+    <div class="hdr-right">
+      <a href="index.html" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View Portfolio
+      </a>
+      <button class="btn btn-primary" id="save-btn" onclick="saveAll()" style="gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save All
+      </button>
+      <button class="btn btn-danger btn-sm" onclick="confirmReset()">Reset</button>
     </div>
-  </aside>
+  </header>
 
-  <!-- MAIN -->
-  <main class="main">
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">Sections</div>
+      <div class="nav-item active" onclick="showSection('s-meta')"><span class="dot"></span> Meta & Nav</div>
+      <div class="nav-item" onclick="showSection('s-hero')"><span class="dot"></span> Hero</div>
+      <div class="nav-item" onclick="showSection('s-stats')"><span class="dot"></span> Stats Bar</div>
+      <div class="nav-item" onclick="showSection('s-brands')"><span class="dot"></span> Brands Section</div>
+      <div class="nav-item" onclick="showSection('s-about')"><span class="dot"></span> About</div>
+      <div class="nav-item" onclick="showSection('s-services')"><span class="dot"></span> Services</div>
+      <div class="nav-item" onclick="showSection('s-process')"><span class="dot"></span> Process</div>
+      <div class="nav-item" onclick="showSection('s-work')"><span class="dot"></span> Work / Case Studies</div>
+      <div class="nav-item" onclick="showSection('s-results')"><span class="dot"></span> Results</div>
+      <div class="nav-item" onclick="showSection('s-testimonial')"><span class="dot"></span> Testimonial</div>
+      <div class="nav-item" onclick="showSection('s-contact')"><span class="dot"></span> Contact</div>
+      <div class="nav-item" onclick="showSection('s-footer')"><span class="dot"></span> Footer</div>
+      <div class="nav-item" onclick="showSection('s-wmodal')"><span class="dot"></span> Work Modal</div>
+      <div class="sidebar-section" style="margin-top:8px;">Tools</div>
+      <div class="nav-item" onclick="saveAll()"><span class="dot"></span> 💾 Save All</div>
+      <div class="nav-item" onclick="confirmReset()"><span class="dot"></span> 🔄 Reset to Defaults</div>
+    </nav>
 
-    <!-- GITHUB CONFIG PAGE -->
-    <div class="page active" id="page-github">
-      <div class="section-title">GitHub Configuration</div>
-      <div class="section-sub">Connect once — all changes save directly to your GitHub repo</div>
-      <div class="gh-config">
-        <div class="gh-config-title">🔑 GitHub Credentials</div>
-        <div class="gh-grid">
-          <div class="field">
-            <label class="label">GitHub Username</label>
-            <input type="text" id="gh-user" placeholder="MariamSaad2" />
+    <div class="main" id="main-content">
+
+      <!-- META & NAV -->
+      <div class="section-panel active" id="s-meta">
+        <div class="panel-header"><h1>⚙️ Meta & Navigation</h1><p>Page title and navigation logo</p></div>
+        <div class="card">
+          <div class="card-header"><div class="card-title"><span class="icon">🌐</span> Page Meta</div></div>
+          <div class="field"><label>Page Title (Browser Tab)</label><input type="text" id="meta-pageTitle"></div>
+          <div class="field"><label>Nav Logo Text</label><input type="text" id="meta-navLogo" placeholder="MS."></div>
+        </div>
+      </div>
+
+      <!-- HERO -->
+      <div class="section-panel" id="s-hero">
+        <div class="panel-header"><h1>🦸 Hero Section</h1><p>Main headline and call-to-action</p></div>
+        <div class="card">
+          <div class="card-header"><div class="card-title"><span class="icon">✏️</span> Hero Text</div></div>
+          <div class="field"><label>Badge Text</label><input type="text" id="hero-badgeText"></div>
+          <div class="grid-2">
+            <div class="field"><label>Title Line 1</label><input type="text" id="hero-titleLine1"></div>
+            <div class="field"><label>Title Line 2 (Highlighted)</label><input type="text" id="hero-titleLine2"></div>
           </div>
-          <div class="field">
-            <label class="label">Repository Name</label>
-            <input type="text" id="gh-repo" placeholder="Mariam-Saad" />
-          </div>
-          <div class="field">
-            <label class="label">Branch</label>
-            <input type="text" id="gh-branch" value="main" />
-          </div>
-          <div class="field gh-grid-full">
-            <label class="label">Personal Access Token (Fine-grained, Contents: Read & Write)</label>
-            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
-          </div>
-          <div class="field gh-grid-full">
-            <label class="label">JSON File Path in Repo</label>
-            <input type="text" id="gh-path" value="portfolio.json" />
+          <div class="field"><label>Subtitle</label><textarea id="hero-subtitle" rows="2"></textarea></div>
+          <div class="field"><label>Description</label><textarea id="hero-description" rows="3"></textarea></div>
+          <div class="grid-2">
+            <div class="field"><label>Button 1 Text</label><input type="text" id="hero-btn1Text"></div>
+            <div class="field"><label>Button 2 Text</label><input type="text" id="hero-btn2Text"></div>
           </div>
         </div>
-        <button class="add-btn" onclick="loadFromGitHub()">📥 Load current data from GitHub</button>
-      </div>
-      <div class="card" style="border-color:rgba(34,197,94,.2);background:rgba(34,197,94,.04);">
-        <div style="color:var(--green);font-size:13px;font-weight:600;margin-bottom:10px;">How to create a GitHub Token</div>
-        <div style="color:var(--gray);font-size:12px;line-height:1.8;">
-          1. Go to GitHub → Settings → Developer settings<br>
-          2. Personal access tokens → Fine-grained tokens → Generate new token<br>
-          3. Set Repository access: Only select repositories → choose your portfolio repo<br>
-          4. Permissions → Repository permissions → Contents → Read and Write<br>
-          5. Copy the token and paste it above (it only shows once!)
-        </div>
-      </div>
-    </div>
-
-    <!-- HERO PAGE -->
-    <div class="page" id="page-hero">
-      <div class="section-title">Hero Section</div>
-      <div class="section-sub">The first thing visitors see on your portfolio</div>
-      <div class="card">
-        <div class="field"><label class="label">Badge Text (small top badge)</label><input type="text" id="hero-badge" placeholder="Available for projects" /></div>
-        <div class="two-col">
-          <div class="field"><label class="label">Title Line 1</label><input type="text" id="hero-title1" placeholder="Social Media" /></div>
-          <div class="field"><label class="label">Title Line 2 (colored)</label><input type="text" id="hero-title2" placeholder="Specialist" /></div>
-        </div>
-        <div class="field"><label class="label">Subtitle (larger text under title)</label><textarea id="hero-subtitle" rows="2"></textarea></div>
-        <div class="field"><label class="label">Description (smaller gray text)</label><textarea id="hero-description" rows="2"></textarea></div>
-      </div>
-    </div>
-
-    <!-- STATS PAGE -->
-    <div class="page" id="page-stats">
-      <div class="section-title">Stats Numbers</div>
-      <div class="section-sub">The 4 achievement numbers shown below the hero</div>
-      <div id="stats-container"></div>
-    </div>
-
-    <!-- ABOUT PAGE -->
-    <div class="page" id="page-about">
-      <div class="section-title">About Me</div>
-      <div class="section-sub">Your bio paragraphs, tags, and contact info in the about section</div>
-
-      <div class="card">
-        <div class="card-header"><div class="card-title">Bio Paragraphs</div></div>
-        <div id="about-paragraphs"></div>
-        <button class="add-btn" onclick="addParagraph()">+ Add Paragraph</button>
-      </div>
-
-      <div class="card">
-        <div class="card-header"><div class="card-title">Skill Tags</div></div>
-        <div id="about-tags" class="tags-wrap"></div>
-        <div class="tag-input-row">
-          <input type="text" id="new-tag" placeholder="e.g. Content Strategy" onkeydown="if(event.key==='Enter')addTag()" />
-          <button class="add-btn" onclick="addTag()">+ Add</button>
+        <div class="card">
+          <div class="card-header"><div class="card-title"><span class="icon">🏷️</span> Photo Badges</div></div>
+          <div class="grid-2">
+            <div>
+              <div class="field"><label>Badge 1 Number</label><input type="text" id="hero-badge1Num"></div>
+              <div class="field"><label>Badge 1 Label</label><input type="text" id="hero-badge1Label"></div>
+            </div>
+            <div>
+              <div class="field"><label>Badge 2 Number</label><input type="text" id="hero-badge2Num"></div>
+              <div class="field"><label>Badge 2 Label</label><input type="text" id="hero-badge2Label"></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header"><div class="card-title">Contact Info (shown in About card)</div></div>
-        <div class="three-col">
-          <div class="field"><label class="label">Location</label><input type="text" id="about-location" placeholder="Cairo, Egypt" /></div>
-          <div class="field"><label class="label">Email</label><input type="email" id="about-email" /></div>
-          <div class="field"><label class="label">Phone</label><input type="text" id="about-phone" /></div>
+      <!-- STATS -->
+      <div class="section-panel" id="s-stats">
+        <div class="panel-header"><h1>📊 Stats Bar</h1><p>4 statistics shown below the hero</p></div>
+        <div id="stats-list" class="array-list"></div>
+      </div>
+
+      <!-- BRANDS -->
+      <div class="section-panel" id="s-brands">
+        <div class="panel-header"><h1>🏢 Brands Section</h1><p>Section heading and description (logos are images, not editable here)</p></div>
+        <div class="card">
+          <div class="field"><label>Section Label</label><input type="text" id="brands-sectionLabel"></div>
+          <div class="field"><label>Heading</label><input type="text" id="brands-heading"></div>
+          <div class="field"><label>Description</label><textarea id="brands-description" rows="3"></textarea></div>
         </div>
       </div>
-    </div>
 
-    <!-- SERVICES PAGE -->
-    <div class="page" id="page-services">
-      <div class="section-title">Services</div>
-      <div class="section-sub">The services you offer — shown as cards</div>
-      <div id="services-container"></div>
-      <button class="add-btn" onclick="addService()">+ Add Service</button>
-    </div>
-
-    <!-- PROCESS PAGE -->
-    <div class="page" id="page-process">
-      <div class="section-title">My Process</div>
-      <div class="section-sub">The step-by-step numbered process</div>
-      <div id="process-container"></div>
-      <button class="add-btn" onclick="addProcessStep()">+ Add Step</button>
-    </div>
-
-    <!-- WORK PAGE -->
-    <div class="page" id="page-work">
-      <div class="section-title">Work Cases</div>
-      <div class="section-sub">Real client projects and results</div>
-      <div id="work-container"></div>
-      <button class="add-btn" onclick="addWorkCase()">+ Add Case Study</button>
-    </div>
-
-    <!-- RESULTS PAGE -->
-    <div class="page" id="page-results">
-      <div class="section-title">Results</div>
-      <div class="section-sub">The 4 key result metrics shown in the results section</div>
-      <div id="results-container"></div>
-    </div>
-
-    <!-- TESTIMONIAL PAGE -->
-    <div class="page" id="page-testimonial">
-      <div class="section-title">Testimonial</div>
-      <div class="section-sub">The client quote shown on your portfolio</div>
-      <div class="card">
-        <div class="field"><label class="label">Quote Text</label><textarea id="testimonial-text" rows="4"></textarea></div>
-        <div class="field"><label class="label">Author (name + role)</label><input type="text" id="testimonial-author" placeholder="Ahmed K., Restaurant Owner" /></div>
-      </div>
-    </div>
-
-    <!-- CONTACT PAGE -->
-    <div class="page" id="page-contact">
-      <div class="section-title">Contact Links</div>
-      <div class="section-sub">How clients can reach you</div>
-      <div class="card">
-        <div class="two-col">
-          <div class="field"><label class="label">📧 Email</label><input type="email" id="contact-email" /></div>
-          <div class="field"><label class="label">📱 WhatsApp Number</label><input type="text" id="contact-whatsapp" placeholder="+201000000000" /></div>
-          <div class="field"><label class="label">📸 Instagram URL</label><input type="url" id="contact-instagram" placeholder="https://instagram.com/..." /></div>
-          <div class="field"><label class="label">📘 Facebook URL</label><input type="url" id="contact-facebook" placeholder="https://facebook.com/..." /></div>
-          <div class="field"><label class="label">💼 LinkedIn URL</label><input type="url" id="contact-linkedin" placeholder="https://linkedin.com/in/..." /></div>
-          <div class="field"><label class="label">🎵 TikTok URL</label><input type="url" id="contact-tiktok" placeholder="https://tiktok.com/@..." /></div>
+      <!-- ABOUT -->
+      <div class="section-panel" id="s-about">
+        <div class="panel-header"><h1>👩 About Section</h1><p>Bio, paragraphs, tags, and info card</p></div>
+        <div class="card">
+          <div class="card-header"><div class="card-title"><span class="icon">📝</span> About Text</div></div>
+          <div class="field"><label>Section Label</label><input type="text" id="about-sectionLabel"></div>
+          <div class="field"><label>Heading (HTML allowed)</label><input type="text" id="about-heading" placeholder="The person behind&lt;br&gt;the strategy"></div>
+          <div class="field"><label>Paragraph 1</label><textarea id="about-para0" rows="3"></textarea></div>
+          <div class="field"><label>Paragraph 2</label><textarea id="about-para1" rows="3"></textarea></div>
+          <div class="field"><label>Paragraph 3</label><textarea id="about-para2" rows="3"></textarea></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title"><span class="icon">🏷️</span> Skill Tags</div></div>
+          <div class="tag-list" id="about-tags-list"></div>
+          <div class="tag-input-row">
+            <input type="text" id="about-tag-input" class="field" placeholder="Add a tag…" onkeydown="if(event.key==='Enter'){event.preventDefault();addTag()}" style="margin:0;">
+            <button class="btn btn-ghost btn-sm" onclick="addTag()">Add</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title"><span class="icon">💼</span> Info Card</div></div>
+          <div class="grid-2">
+            <div class="field"><label>Name</label><input type="text" id="about-infoName"></div>
+            <div class="field"><label>Role</label><input type="text" id="about-infoRole"></div>
+          </div>
+          <div id="about-info-items-list" class="array-list"></div>
+          <button class="add-btn" onclick="addInfoItem()">+ Add Info Item</button>
         </div>
       </div>
-    </div>
 
-  </main>
+      <!-- SERVICES -->
+      <div class="section-panel" id="s-services">
+        <div class="panel-header"><h1>🎯 Services</h1><p>What you offer — up to 4 cards</p></div>
+        <div class="card">
+          <div class="grid-2">
+            <div class="field"><label>Section Label</label><input type="text" id="services-sectionLabel"></div>
+            <div class="field"><label>Heading</label><input type="text" id="services-heading"></div>
+          </div>
+        </div>
+        <div id="services-list" class="array-list"></div>
+        <button class="add-btn" onclick="addService()">+ Add Service</button>
+      </div>
+
+      <!-- PROCESS -->
+      <div class="section-panel" id="s-process">
+        <div class="panel-header"><h1>⚙️ Process Steps</h1><p>How you work — step by step</p></div>
+        <div class="card">
+          <div class="grid-2">
+            <div class="field"><label>Section Label</label><input type="text" id="process-sectionLabel"></div>
+            <div class="field"><label>Heading</label><input type="text" id="process-heading"></div>
+          </div>
+        </div>
+        <div id="process-list" class="array-list"></div>
+        <button class="add-btn" onclick="addStep()">+ Add Step</button>
+      </div>
+
+      <!-- WORK -->
+      <div class="section-panel" id="s-work">
+        <div class="panel-header"><h1>💼 Work / Case Studies</h1><p>Portfolio projects displayed on the site</p></div>
+        <div class="card">
+          <div class="grid-2">
+            <div class="field"><label>Section Label</label><input type="text" id="work-sectionLabel"></div>
+            <div class="field"><label>Heading</label><input type="text" id="work-heading"></div>
+          </div>
+        </div>
+        <div id="work-list" class="array-list"></div>
+        <button class="add-btn" onclick="addWorkItem()">+ Add Project</button>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="section-panel" id="s-results">
+        <div class="panel-header"><h1>📈 Results & Impact</h1><p>Key metrics and achievements</p></div>
+        <div class="card">
+          <div class="grid-2">
+            <div class="field"><label>Section Label</label><input type="text" id="results-sectionLabel"></div>
+            <div class="field"><label>Heading</label><input type="text" id="results-heading"></div>
+          </div>
+        </div>
+        <div id="results-list" class="array-list"></div>
+        <button class="add-btn" onclick="addResult()">+ Add Result</button>
+      </div>
+
+      <!-- TESTIMONIAL -->
+      <div class="section-panel" id="s-testimonial">
+        <div class="panel-header"><h1>💬 Testimonial</h1><p>Client quote displayed on the portfolio</p></div>
+        <div class="card">
+          <div class="field"><label>Quote Text</label><textarea id="testimonial-quote" rows="4"></textarea></div>
+          <div class="field"><label>Author (e.g. — West Arena Mall)</label><input type="text" id="testimonial-author"></div>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="section-panel" id="s-contact">
+        <div class="panel-header"><h1>📬 Contact Section</h1><p>Contact info, email, and WhatsApp numbers</p></div>
+        <div class="card">
+          <div class="card-header"><div class="card-title"><span class="icon">📝</span> Section Text</div></div>
+          <div class="grid-2">
+            <div class="field"><label>Section Label</label><input type="text" id="contact-sectionLabel"></div>
+            <div class="field"><label>Heading</label><input type="text" id="contact-heading"></div>
+          </div>
+          <div class="field"><label>Description</label><textarea id="contact-description" rows="2"></textarea></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title"><span class="icon">✉️</span> Email</div></div>
+          <div class="field"><label>Email Address</label><input type="email" id="contact-email"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title"><span class="icon">📱</span> WhatsApp Numbers</div></div>
+          <div id="whatsapp-list" class="array-list"></div>
+          <button class="add-btn" onclick="addWhatsApp()">+ Add WhatsApp Number</button>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="section-panel" id="s-footer">
+        <div class="panel-header"><h1>🦶 Footer</h1><p>Name and copyright text</p></div>
+        <div class="card">
+          <div class="field"><label>Name</label><input type="text" id="footer-name"></div>
+          <div class="field"><label>Copyright Text</label><input type="text" id="footer-copy"></div>
+        </div>
+      </div>
+
+      <!-- WORK MODAL -->
+      <div class="section-panel" id="s-wmodal">
+        <div class="panel-header"><h1>🪟 Work Modal</h1><p>The popup that appears when "View My Work" is clicked</p></div>
+        <div class="card">
+          <div class="field"><label>Title</label><input type="text" id="wmodal-title"></div>
+          <div class="field"><label>Description</label><textarea id="wmodal-desc" rows="3"></textarea></div>
+          <div class="field"><label>Challenge</label><textarea id="wmodal-challenge" rows="2"></textarea></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Strategy Items</div></div>
+          <div id="wmodal-strategy-list" class="array-list"></div>
+          <button class="add-btn" onclick="addWmodalItem('strategy')">+ Add Strategy Item</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Content Execution Items</div></div>
+          <div id="wmodal-content-list" class="array-list"></div>
+          <button class="add-btn" onclick="addWmodalItem('content')">+ Add Content Item</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Results Items</div></div>
+          <div id="wmodal-results-list" class="array-list"></div>
+          <button class="add-btn" onclick="addWmodalItem('results')">+ Add Result Item</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Content Type Tags</div></div>
+          <div class="tag-list" id="wmodal-types-list"></div>
+          <div class="tag-input-row">
+            <input type="text" id="wmodal-type-input" placeholder="Add type…" onkeydown="if(event.key==='Enter'){event.preventDefault();addWmodalType()}" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:10px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;flex:1;">
+            <button class="btn btn-ghost btn-sm" onclick="addWmodalType()">Add</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /layout -->
+</div><!-- /app -->
+
+<!-- TOAST -->
+<div id="toast-container"></div>
+
+<!-- CONFIRM DIALOG -->
+<div id="confirm-overlay">
+  <div class="confirm-box">
+    <h3>⚠️ Reset to Defaults?</h3>
+    <p>This will erase all saved changes and restore the original portfolio content. This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button class="btn btn-danger" onclick="doReset()">Yes, Reset</button>
+      <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+    </div>
+  </div>
 </div>
 
-<div class="toast" id="toast"></div>
-
+<script src="data.js"></script>
 <script>
-// ── STATE ──────────────────────────────────────────────────────────────────
-let data = {};
-let fileSha = null;
-let aboutTags = [];
-let workResults = {}; // store results arrays per work index
+/* ============================================================
+   Admin Panel Logic
+   ============================================================ */
 
-// ── NAVIGATION ────────────────────────────────────────────────────────────
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+const ADMIN_PW = 'mariam2025';
+let D = null; // current working data
+
+/* ── AUTH ── */
+function checkPw() {
+  const v = document.getElementById('pw-input').value;
+  const err = document.getElementById('gate-err');
+  if (v === ADMIN_PW) {
+    document.getElementById('gate').style.opacity = '0';
+    document.getElementById('gate').style.transition = 'opacity .4s';
+    setTimeout(() => { document.getElementById('gate').style.display = 'none'; }, 400);
+    document.getElementById('app').classList.add('visible');
+    init();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+document.addEventListener('keydown', e => {
+  if (document.getElementById('gate').style.display !== 'none' && e.key === 'Enter') checkPw();
+});
+
+/* ── NAV ── */
+function showSection(id) {
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById(id).classList.add('active');
   event.currentTarget.classList.add('active');
 }
 
-// ── GITHUB ────────────────────────────────────────────────────────────────
-function ghConfig() {
-  return {
-    token: document.getElementById('gh-token').value.trim(),
-    user: document.getElementById('gh-user').value.trim(),
-    repo: document.getElementById('gh-repo').value.trim(),
-    branch: document.getElementById('gh-branch').value.trim() || 'main',
-    path: document.getElementById('gh-path').value.trim()
-  };
+/* ── INIT: load data into form ── */
+function init() {
+  D = loadData();
+  populate();
 }
 
-async function loadFromGitHub() {
-  const c = ghConfig();
-  if (!c.token || !c.user || !c.repo) { toast('Fill in GitHub credentials first', 'error'); return; }
-  toast('Loading from GitHub...', '');
-  try {
-    const res = await fetch(`https://api.github.com/repos/${c.user}/${c.repo}/contents/${c.path}?ref=${c.branch}`, {
-      headers: { Authorization: `Bearer ${c.token}`, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (!res.ok) throw new Error(`GitHub error: ${res.status}`);
-    const json = await res.json();
-    fileSha = json.sha;
-    data = JSON.parse(atob(json.content.replace(/\n/g, '')));
-    fillAllForms();
-    setStatus('Connected', 'ok');
-    toast('Data loaded successfully ✓', 'success');
-  } catch(e) {
-    setStatus('Error', 'err');
-    toast(e.message, 'error');
-  }
+function populate() {
+  // META
+  setVal('meta-pageTitle', D.meta.pageTitle);
+  setVal('meta-navLogo', D.meta.navLogo);
+
+  // HERO
+  setVal('hero-badgeText', D.hero.badgeText);
+  setVal('hero-titleLine1', D.hero.titleLine1);
+  setVal('hero-titleLine2', D.hero.titleLine2);
+  setVal('hero-subtitle', D.hero.subtitle);
+  setVal('hero-description', D.hero.description);
+  setVal('hero-btn1Text', D.hero.btn1Text);
+  setVal('hero-btn2Text', D.hero.btn2Text);
+  setVal('hero-badge1Num', D.hero.badge1Num);
+  setVal('hero-badge1Label', D.hero.badge1Label);
+  setVal('hero-badge2Num', D.hero.badge2Num);
+  setVal('hero-badge2Label', D.hero.badge2Label);
+
+  // STATS
+  renderStats();
+
+  // BRANDS
+  setVal('brands-sectionLabel', D.brands.sectionLabel);
+  setVal('brands-heading', D.brands.heading);
+  setVal('brands-description', D.brands.description);
+
+  // ABOUT
+  setVal('about-sectionLabel', D.about.sectionLabel);
+  setVal('about-heading', D.about.heading);
+  setVal('about-para0', D.about.paragraphs[0] || '');
+  setVal('about-para1', D.about.paragraphs[1] || '');
+  setVal('about-para2', D.about.paragraphs[2] || '');
+  renderTags('about-tags-list', D.about.tags, 'about');
+  setVal('about-infoName', D.about.infoName);
+  setVal('about-infoRole', D.about.infoRole);
+  renderInfoItems();
+
+  // SERVICES
+  setVal('services-sectionLabel', D.services.sectionLabel);
+  setVal('services-heading', D.services.heading);
+  renderServices();
+
+  // PROCESS
+  setVal('process-sectionLabel', D.process.sectionLabel);
+  setVal('process-heading', D.process.heading);
+  renderProcess();
+
+  // WORK
+  setVal('work-sectionLabel', D.work.sectionLabel);
+  setVal('work-heading', D.work.heading);
+  renderWork();
+
+  // RESULTS
+  setVal('results-sectionLabel', D.results.sectionLabel);
+  setVal('results-heading', D.results.heading);
+  renderResults();
+
+  // TESTIMONIAL
+  setVal('testimonial-quote', D.testimonial.quote);
+  setVal('testimonial-author', D.testimonial.author);
+
+  // CONTACT
+  setVal('contact-sectionLabel', D.contact.sectionLabel);
+  setVal('contact-heading', D.contact.heading);
+  setVal('contact-description', D.contact.description);
+  setVal('contact-email', D.contact.email);
+  renderWhatsApp();
+
+  // FOOTER
+  setVal('footer-name', D.footer.name);
+  setVal('footer-copy', D.footer.copy);
+
+  // WORK MODAL
+  setVal('wmodal-title', D.workModal.title);
+  setVal('wmodal-desc', D.workModal.description);
+  setVal('wmodal-challenge', D.workModal.challenge);
+  renderWmodalList('strategy');
+  renderWmodalList('content');
+  renderWmodalList('results');
+  renderTags('wmodal-types-list', D.workModal.contentTypes, 'wmodal');
 }
 
-async function saveToGitHub() {
-  const c = ghConfig();
-  if (!c.token || !c.user || !c.repo) { toast('Fill in GitHub credentials first', 'error'); return; }
-  const btn = document.getElementById('saveBtn');
-  btn.disabled = true; btn.textContent = 'Saving...';
-  collectAllData();
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  const body = { message: 'Update portfolio content via admin panel', content, branch: c.branch };
-  if (fileSha) body.sha = fileSha;
-  try {
-    const res = await fetch(`https://api.github.com/repos/${c.user}/${c.repo}/contents/${c.path}`, {
-      method: 'PUT',
-      headers: { Authorization: `Bearer ${c.token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.message || 'Save failed');
-    fileSha = json.content.sha;
-    toast('Saved to GitHub ✓ Portfolio updated!', 'success');
-  } catch(e) {
-    toast(e.message, 'error');
-  } finally {
-    btn.disabled = false; btn.textContent = '💾 Save to GitHub';
-  }
+/* ── COLLECT DATA FROM FORM ── */
+function collectData() {
+  D.meta.pageTitle = getVal('meta-pageTitle');
+  D.meta.navLogo = getVal('meta-navLogo');
+
+  D.hero.badgeText = getVal('hero-badgeText');
+  D.hero.titleLine1 = getVal('hero-titleLine1');
+  D.hero.titleLine2 = getVal('hero-titleLine2');
+  D.hero.subtitle = getVal('hero-subtitle');
+  D.hero.description = getVal('hero-description');
+  D.hero.btn1Text = getVal('hero-btn1Text');
+  D.hero.btn2Text = getVal('hero-btn2Text');
+  D.hero.badge1Num = getVal('hero-badge1Num');
+  D.hero.badge1Label = getVal('hero-badge1Label');
+  D.hero.badge2Num = getVal('hero-badge2Num');
+  D.hero.badge2Label = getVal('hero-badge2Label');
+
+  // Stats
+  D.stats = Array.from(document.querySelectorAll('[data-stat]')).map(el => ({
+    num: el.querySelector('[data-stat-num]').value,
+    label: el.querySelector('[data-stat-label]').value
+  }));
+
+  D.brands.sectionLabel = getVal('brands-sectionLabel');
+  D.brands.heading = getVal('brands-heading');
+  D.brands.description = getVal('brands-description');
+
+  D.about.sectionLabel = getVal('about-sectionLabel');
+  D.about.heading = getVal('about-heading');
+  D.about.paragraphs[0] = getVal('about-para0');
+  D.about.paragraphs[1] = getVal('about-para1');
+  D.about.paragraphs[2] = getVal('about-para2');
+  D.about.infoName = getVal('about-infoName');
+  D.about.infoRole = getVal('about-infoRole');
+  D.about.infoItems = Array.from(document.querySelectorAll('[data-info-item]')).map(el => ({
+    icon: el.querySelector('[data-info-icon]').value,
+    text: el.querySelector('[data-info-text]').value
+  }));
+
+  D.services.sectionLabel = getVal('services-sectionLabel');
+  D.services.heading = getVal('services-heading');
+  D.services.items = Array.from(document.querySelectorAll('[data-service]')).map(el => ({
+    icon: el.querySelector('[data-svc-icon]').value,
+    title: el.querySelector('[data-svc-title]').value,
+    description: el.querySelector('[data-svc-desc]').value
+  }));
+
+  D.process.sectionLabel = getVal('process-sectionLabel');
+  D.process.heading = getVal('process-heading');
+  D.process.steps = Array.from(document.querySelectorAll('[data-step]')).map(el => ({
+    num: el.querySelector('[data-step-num]').value,
+    title: el.querySelector('[data-step-title]').value,
+    desc: el.querySelector('[data-step-desc]').value
+  }));
+
+  D.work.sectionLabel = getVal('work-sectionLabel');
+  D.work.heading = getVal('work-heading');
+  D.work.items = Array.from(document.querySelectorAll('[data-work-item]')).map(el => ({
+    category: el.querySelector('[data-work-cat]').value,
+    title: el.querySelector('[data-work-title]').value,
+    challenge: el.querySelector('[data-work-challenge]').value,
+    results: Array.from(el.querySelectorAll('[data-work-result]')).map(r => r.value).filter(v => v.trim())
+  }));
+
+  D.results.sectionLabel = getVal('results-sectionLabel');
+  D.results.heading = getVal('results-heading');
+  D.results.items = Array.from(document.querySelectorAll('[data-result-item]')).map(el => ({
+    icon: el.querySelector('[data-result-icon]').value,
+    num: el.querySelector('[data-result-num]').value,
+    text: el.querySelector('[data-result-text]').value
+  }));
+
+  D.testimonial.quote = getVal('testimonial-quote');
+  D.testimonial.author = getVal('testimonial-author');
+
+  D.contact.sectionLabel = getVal('contact-sectionLabel');
+  D.contact.heading = getVal('contact-heading');
+  D.contact.description = getVal('contact-description');
+  D.contact.email = getVal('contact-email');
+  D.contact.whatsapp = Array.from(document.querySelectorAll('[data-wa-item]')).map(el => ({
+    number: el.querySelector('[data-wa-num]').value,
+    display: el.querySelector('[data-wa-display]').value
+  }));
+
+  D.footer.name = getVal('footer-name');
+  D.footer.copy = getVal('footer-copy');
+
+  D.workModal.title = getVal('wmodal-title');
+  D.workModal.description = getVal('wmodal-desc');
+  D.workModal.challenge = getVal('wmodal-challenge');
+  D.workModal.strategyItems = Array.from(document.querySelectorAll('[data-wmodal-strategy]')).map(el => el.value).filter(v => v.trim());
+  D.workModal.contentItems = Array.from(document.querySelectorAll('[data-wmodal-content]')).map(el => el.value).filter(v => v.trim());
+  D.workModal.resultsItems = Array.from(document.querySelectorAll('[data-wmodal-results]')).map(el => el.value).filter(v => v.trim());
 }
 
-function setStatus(text, cls) {
-  const el = document.getElementById('ghStatus');
-  el.textContent = text;
-  el.className = 'gh-status ' + cls;
+function saveAll() {
+  collectData();
+  const ok = saveData(D);
+  if (ok) toast('Changes saved! Refresh the portfolio to see updates.', 'success');
+  else toast('Could not save — localStorage might be full.', 'error');
 }
 
-// ── FILL FORMS ────────────────────────────────────────────────────────────
-function fillAllForms() {
-  fillHero(); fillStats(); fillAbout(); fillServices(); fillProcess(); fillWork(); fillResults(); fillTestimonial(); fillContact();
+/* ── RENDER HELPERS ── */
+
+function renderStats() {
+  const el = document.getElementById('stats-list');
+  el.innerHTML = D.stats.map((s, i) => `
+    <div class="array-item" data-stat>
+      <div class="array-item-header">
+        <div class="array-item-label">Stat ${i + 1}</div>
+        <div class="array-item-actions">
+          <button class="remove-btn" onclick="removeStat(${i})">Remove</button>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Number</label><input type="text" data-stat-num value="${esc(s.num)}"></div>
+        <div class="field"><label>Label</label><input type="text" data-stat-label value="${esc(s.label)}"></div>
+      </div>
+    </div>`).join('') + `<button class="add-btn" onclick="addStat()">+ Add Stat</button>`;
 }
 
-function fillHero() {
-  const h = data.hero || {};
-  document.getElementById('hero-badge').value = h.badge || '';
-  document.getElementById('hero-title1').value = h.title_line1 || '';
-  document.getElementById('hero-title2').value = h.title_line2 || '';
-  document.getElementById('hero-subtitle').value = h.subtitle || '';
-  document.getElementById('hero-description').value = h.description || '';
-}
+function addStat() { collectData(); D.stats.push({ num: '', label: '' }); renderStats(); }
+function removeStat(i) { collectData(); D.stats.splice(i, 1); renderStats(); }
 
-function fillStats() {
-  const stats = data.stats || [];
-  const c = document.getElementById('stats-container');
-  c.innerHTML = stats.map((s, i) => `
-    <div class="card">
-      <div class="card-header"><div class="card-title">Stat #${i+1}</div></div>
-      <div class="two-col">
-        <div class="field"><label class="label">Number / Value</label><input type="text" id="stat-num-${i}" value="${s.number || ''}" placeholder="50+" /></div>
-        <div class="field"><label class="label">Label</label><input type="text" id="stat-label-${i}" value="${s.label || ''}" placeholder="Brands Served" /></div>
+function renderInfoItems() {
+  const el = document.getElementById('about-info-items-list');
+  el.innerHTML = (D.about.infoItems || []).map((item, i) => `
+    <div class="array-item" data-info-item>
+      <div class="array-item-header"><div class="array-item-label">Info Item ${i+1}</div>
+        <button class="remove-btn" onclick="removeInfoItem(${i})">Remove</button>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Icon (emoji)</label><input type="text" data-info-icon value="${esc(item.icon)}"></div>
+        <div class="field"><label>Text</label><input type="text" data-info-text value="${esc(item.text)}"></div>
       </div>
     </div>`).join('');
 }
+function addInfoItem() { collectData(); D.about.infoItems.push({ icon: '📍', text: '' }); renderInfoItems(); }
+function removeInfoItem(i) { collectData(); D.about.infoItems.splice(i, 1); renderInfoItems(); }
 
-function fillAbout() {
-  const a = data.about || {};
-  const paras = a.paragraphs || [];
-  renderParagraphs(paras);
-  aboutTags = [...(a.tags || [])];
-  renderTags();
-  const ci = a.contact_info || {};
-  document.getElementById('about-location').value = ci.location || '';
-  document.getElementById('about-email').value = ci.email || '';
-  document.getElementById('about-phone').value = ci.phone || '';
+function renderTags(containerId, tags, ns) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = (tags || []).map((t, i) => `
+    <div class="tag-chip">${esc(t)}<span class="del" onclick="removeTag('${ns}',${i})">×</span></div>`).join('');
 }
-
-function renderParagraphs(paras) {
-  const c = document.getElementById('about-paragraphs');
-  c.innerHTML = paras.map((p, i) => `
-    <div style="display:flex;gap:8px;margin-bottom:10px;align-items:flex-start">
-      <textarea id="para-${i}" rows="2" style="flex:1">${p}</textarea>
-      <button class="del-btn" onclick="removeParagraph(${i})">✕</button>
-    </div>`).join('');
-}
-
-function addParagraph() {
-  const paras = getCurrentParagraphs();
-  paras.push('');
-  renderParagraphs(paras);
-}
-
-function removeParagraph(i) {
-  const paras = getCurrentParagraphs();
-  paras.splice(i, 1);
-  renderParagraphs(paras);
-}
-
-function getCurrentParagraphs() {
-  const paras = [];
-  let i = 0;
-  while (document.getElementById(`para-${i}`)) {
-    paras.push(document.getElementById(`para-${i}`).value);
-    i++;
-  }
-  return paras;
-}
-
-function renderTags() {
-  document.getElementById('about-tags').innerHTML = aboutTags.map((t, i) =>
-    `<span class="tag-pill">${t}<button onclick="removeTag(${i})">×</button></span>`).join('');
-}
-
 function addTag() {
-  const inp = document.getElementById('new-tag');
-  if (inp.value.trim()) { aboutTags.push(inp.value.trim()); inp.value = ''; renderTags(); }
+  const inp = document.getElementById('about-tag-input');
+  const val = inp.value.trim();
+  if (!val) return;
+  collectData();
+  D.about.tags.push(val);
+  inp.value = '';
+  renderTags('about-tags-list', D.about.tags, 'about');
+}
+function addWmodalType() {
+  const inp = document.getElementById('wmodal-type-input');
+  const val = inp.value.trim();
+  if (!val) return;
+  collectData();
+  D.workModal.contentTypes.push(val);
+  inp.value = '';
+  renderTags('wmodal-types-list', D.workModal.contentTypes, 'wmodal');
+}
+function removeTag(ns, i) {
+  collectData();
+  if (ns === 'about') { D.about.tags.splice(i, 1); renderTags('about-tags-list', D.about.tags, 'about'); }
+  if (ns === 'wmodal') { D.workModal.contentTypes.splice(i, 1); renderTags('wmodal-types-list', D.workModal.contentTypes, 'wmodal'); }
 }
 
-function removeTag(i) { aboutTags.splice(i, 1); renderTags(); }
-
-function fillServices() {
-  const services = data.services || [];
-  const c = document.getElementById('services-container');
-  c.innerHTML = services.map((s, i) => `
-    <div class="card" id="svc-${i}">
-      <div class="card-header"><div class="card-title">Service ${i+1}</div><button class="del-btn" onclick="removeService(${i})">Delete</button></div>
-      <div class="two-col">
-        <div class="field"><label class="label">Icon (emoji)</label><input type="text" id="svc-icon-${i}" value="${s.icon || ''}" style="font-size:20px" /></div>
-        <div class="field"><label class="label">Title</label><input type="text" id="svc-title-${i}" value="${s.title || ''}" /></div>
+function renderServices() {
+  const el = document.getElementById('services-list');
+  el.innerHTML = D.services.items.map((s, i) => `
+    <div class="array-item" data-service>
+      <div class="array-item-header"><div class="array-item-label">Service ${i+1}</div>
+        <button class="remove-btn" onclick="removeService(${i})">Remove</button>
       </div>
-      <div class="field"><label class="label">Description</label><textarea id="svc-desc-${i}" rows="2">${s.description || ''}</textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>Icon (emoji)</label><input type="text" data-svc-icon value="${esc(s.icon)}"></div>
+        <div class="field"><label>Title</label><input type="text" data-svc-title value="${esc(s.title)}"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea data-svc-desc rows="2">${esc(s.description)}</textarea></div>
     </div>`).join('');
 }
+function addService() { collectData(); D.services.items.push({ icon: '⭐', title: '', description: '' }); renderServices(); }
+function removeService(i) { collectData(); D.services.items.splice(i, 1); renderServices(); }
 
-function addService() {
-  const services = collectServices();
-  services.push({icon:'📌', title:'', description:''});
-  data.services = services;
-  fillServices();
-}
-
-function removeService(i) {
-  const s = collectServices();
-  s.splice(i, 1);
-  data.services = s;
-  fillServices();
-}
-
-function collectServices() {
-  const s = [];
-  let i = 0;
-  while (document.getElementById(`svc-${i}`)) {
-    s.push({
-      icon: document.getElementById(`svc-icon-${i}`).value,
-      title: document.getElementById(`svc-title-${i}`).value,
-      description: document.getElementById(`svc-desc-${i}`).value
-    });
-    i++;
-  }
-  return s;
-}
-
-function fillProcess() {
-  const steps = data.process || [];
-  const c = document.getElementById('process-container');
-  c.innerHTML = steps.map((s, i) => `
-    <div class="card" id="proc-${i}">
-      <div class="card-header"><div class="card-title">Step ${i+1}</div><button class="del-btn" onclick="removeProcessStep(${i})">Delete</button></div>
-      <div class="three-col">
-        <div class="field"><label class="label">Step Number</label><input type="text" id="proc-step-${i}" value="${s.step || ''}" placeholder="01" /></div>
-        <div class="field" style="grid-column:2/-1"><label class="label">Title</label><input type="text" id="proc-title-${i}" value="${s.title || ''}" /></div>
+function renderProcess() {
+  const el = document.getElementById('process-list');
+  el.innerHTML = D.process.steps.map((s, i) => `
+    <div class="array-item" data-step>
+      <div class="array-item-header"><div class="array-item-label">Step ${i+1}</div>
+        <button class="remove-btn" onclick="removeStep(${i})">Remove</button>
       </div>
-      <div class="field"><label class="label">Description</label><textarea id="proc-desc-${i}" rows="2">${s.description || ''}</textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>Step Number</label><input type="text" data-step-num value="${esc(s.num)}"></div>
+        <div class="field"><label>Title</label><input type="text" data-step-title value="${esc(s.title)}"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea data-step-desc rows="2">${esc(s.desc)}</textarea></div>
     </div>`).join('');
 }
+function addStep() { collectData(); D.process.steps.push({ num: String(D.process.steps.length + 1), title: '', desc: '' }); renderProcess(); }
+function removeStep(i) { collectData(); D.process.steps.splice(i, 1); renderProcess(); }
 
-function addProcessStep() {
-  const steps = collectProcess();
-  steps.push({step: String(steps.length+1).padStart(2,'0'), title:'', description:''});
-  data.process = steps;
-  fillProcess();
-}
-
-function removeProcessStep(i) {
-  const steps = collectProcess();
-  steps.splice(i, 1);
-  data.process = steps;
-  fillProcess();
-}
-
-function collectProcess() {
-  const s = [];
-  let i = 0;
-  while (document.getElementById(`proc-${i}`)) {
-    s.push({
-      step: document.getElementById(`proc-step-${i}`).value,
-      title: document.getElementById(`proc-title-${i}`).value,
-      description: document.getElementById(`proc-desc-${i}`).value
-    });
-    i++;
-  }
-  return s;
-}
-
-function fillWork() {
-  const work = data.work || [];
-  const c = document.getElementById('work-container');
-  c.innerHTML = work.map((w, i) => {
-    const results = w.results || [];
-    return `
-    <div class="card" id="work-${i}">
-      <div class="card-header"><div class="card-title">Case Study ${i+1}</div><button class="del-btn" onclick="removeWorkCase(${i})">Delete</button></div>
-      <div class="two-col">
-        <div class="field"><label class="label">Category Label</label><input type="text" id="work-label-${i}" value="${w.label || ''}" placeholder="Restaurant / F&B" /></div>
-        <div class="field"><label class="label">Client / Project Name</label><input type="text" id="work-title-${i}" value="${w.title || ''}" /></div>
+function renderWork() {
+  const el = document.getElementById('work-list');
+  el.innerHTML = D.work.items.map((w, i) => `
+    <div class="array-item" data-work-item>
+      <div class="array-item-header"><div class="array-item-label">Project ${i+1}: ${esc(w.title || '…')}</div>
+        <button class="remove-btn" onclick="removeWork(${i})">Remove</button>
       </div>
-      <div class="field"><label class="label">Challenge</label><textarea id="work-challenge-${i}" rows="2">${w.challenge || ''}</textarea></div>
-      <div class="field">
-        <label class="label">Results (one per line)</label>
-        <textarea id="work-results-${i}" rows="3">${results.join('\n')}</textarea>
+      <div class="grid-2">
+        <div class="field"><label>Category</label><input type="text" data-work-cat value="${esc(w.category)}"></div>
+        <div class="field"><label>Title</label><input type="text" data-work-title value="${esc(w.title)}"></div>
       </div>
-    </div>`;
-  }).join('');
-}
-
-function addWorkCase() {
-  const work = collectWork();
-  work.push({label:'', title:'', challenge:'', results:[]});
-  data.work = work;
-  fillWork();
-}
-
-function removeWorkCase(i) {
-  const work = collectWork();
-  work.splice(i, 1);
-  data.work = work;
-  fillWork();
-}
-
-function collectWork() {
-  const w = [];
-  let i = 0;
-  while (document.getElementById(`work-${i}`)) {
-    w.push({
-      label: document.getElementById(`work-label-${i}`).value,
-      title: document.getElementById(`work-title-${i}`).value,
-      challenge: document.getElementById(`work-challenge-${i}`).value,
-      results: document.getElementById(`work-results-${i}`).value.split('\n').map(s=>s.trim()).filter(Boolean)
-    });
-    i++;
-  }
-  return w;
-}
-
-function fillResults() {
-  const results = data.results || [];
-  const c = document.getElementById('results-container');
-  c.innerHTML = results.map((r, i) => `
-    <div class="card">
-      <div class="card-header"><div class="card-title">Result #${i+1}</div></div>
-      <div class="three-col">
-        <div class="field"><label class="label">Icon</label><input type="text" id="res-icon-${i}" value="${r.icon || ''}" style="font-size:20px" /></div>
-        <div class="field"><label class="label">Number / Value</label><input type="text" id="res-num-${i}" value="${r.number || ''}" /></div>
-        <div class="field" style="grid-column:span 1"></div>
+      <div class="field"><label>Challenge / Problem</label><textarea data-work-challenge rows="2">${esc(w.challenge)}</textarea></div>
+      <div class="field"><label>Results (one per line)</label>
+        ${(w.results || []).map((r, j) => `<div style="display:flex;gap:6px;margin-bottom:6px;"><input type="text" data-work-result value="${esc(r)}" style="flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--white);font-family:inherit;font-size:13px;padding:8px 12px;outline:none;"><button class="remove-btn" onclick="removeWorkResult(this)">×</button></div>`).join('')}
+        <button class="add-btn" onclick="addWorkResult(this)" style="margin-top:4px;">+ Add Result</button>
       </div>
-      <div class="field"><label class="label">Label Description</label><input type="text" id="res-label-${i}" value="${r.label || ''}" /></div>
     </div>`).join('');
 }
+function addWork() { collectData(); D.work.items.push({ category: '', title: '', challenge: '', results: [] }); renderWork(); }
+function removeWork(i) { collectData(); D.work.items.splice(i, 1); renderWork(); }
+function addWorkItem() { addWork(); }
+function addWorkResult(btn) {
+  const container = btn.parentElement;
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;';
+  div.innerHTML = `<input type="text" data-work-result style="flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--white);font-family:inherit;font-size:13px;padding:8px 12px;outline:none;"><button class="remove-btn" onclick="removeWorkResult(this)">×</button>`;
+  container.insertBefore(div, btn);
+}
+function removeWorkResult(btn) { btn.parentElement.remove(); }
 
-function fillTestimonial() {
-  const t = data.testimonial || {};
-  document.getElementById('testimonial-text').value = t.text || '';
-  document.getElementById('testimonial-author').value = t.author || '';
+function renderResults() {
+  const el = document.getElementById('results-list');
+  el.innerHTML = D.results.items.map((r, i) => `
+    <div class="array-item" data-result-item>
+      <div class="array-item-header"><div class="array-item-label">Result ${i+1}</div>
+        <button class="remove-btn" onclick="removeResult(${i})">Remove</button>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Icon (emoji)</label><input type="text" data-result-icon value="${esc(r.icon)}"></div>
+        <div class="field"><label>Number / Symbol</label><input type="text" data-result-num value="${esc(r.num)}"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea data-result-text rows="2">${esc(r.text)}</textarea></div>
+    </div>`).join('');
+}
+function addResult() { collectData(); D.results.items.push({ icon: '📊', num: '', text: '' }); renderResults(); }
+function removeResult(i) { collectData(); D.results.items.splice(i, 1); renderResults(); }
+
+function renderWhatsApp() {
+  const el = document.getElementById('whatsapp-list');
+  el.innerHTML = (D.contact.whatsapp || []).map((wa, i) => `
+    <div class="array-item" data-wa-item>
+      <div class="array-item-header"><div class="array-item-label">Number ${i+1}</div>
+        <button class="remove-btn" onclick="removeWA(${i})">Remove</button>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Full Number (with country code)</label><input type="text" data-wa-num value="${esc(wa.number)}" placeholder="201289389948"></div>
+        <div class="field"><label>Display Text</label><input type="text" data-wa-display value="${esc(wa.display)}" placeholder="01289389948"></div>
+      </div>
+    </div>`).join('');
+}
+function addWhatsApp() { collectData(); D.contact.whatsapp.push({ number: '', display: '' }); renderWhatsApp(); }
+function removeWA(i) { collectData(); D.contact.whatsapp.splice(i, 1); renderWhatsApp(); }
+
+function renderWmodalList(type) {
+  const arr = type === 'strategy' ? D.workModal.strategyItems : type === 'content' ? D.workModal.contentItems : D.workModal.resultsItems;
+  const el = document.getElementById(`wmodal-${type}-list`);
+  el.innerHTML = (arr || []).map((item, i) => `
+    <div class="array-item" style="display:flex;align-items:center;gap:8px;padding:10px 14px;">
+      <input type="text" data-wmodal-${type} value="${esc(item)}" style="flex:1;background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--white);font-family:inherit;font-size:13px;padding:4px 0;outline:none;">
+      <button class="remove-btn" onclick="removeWmodalItem('${type}',${i})">×</button>
+    </div>`).join('');
+}
+function addWmodalItem(type) {
+  collectData();
+  if (type === 'strategy') D.workModal.strategyItems.push('');
+  else if (type === 'content') D.workModal.contentItems.push('');
+  else D.workModal.resultsItems.push('');
+  renderWmodalList(type);
+}
+function removeWmodalItem(type, i) {
+  collectData();
+  if (type === 'strategy') D.workModal.strategyItems.splice(i, 1);
+  else if (type === 'content') D.workModal.contentItems.splice(i, 1);
+  else D.workModal.resultsItems.splice(i, 1);
+  renderWmodalList(type);
 }
 
-function fillContact() {
-  const c = data.contact || {};
-  document.getElementById('contact-email').value = c.email || '';
-  document.getElementById('contact-whatsapp').value = c.whatsapp || '';
-  document.getElementById('contact-instagram').value = c.instagram || '';
-  document.getElementById('contact-facebook').value = c.facebook || '';
-  document.getElementById('contact-linkedin').value = c.linkedin || '';
-  document.getElementById('contact-tiktok').value = c.tiktok || '';
+/* ── RESET ── */
+function confirmReset() { document.getElementById('confirm-overlay').classList.add('open'); }
+function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('open'); }
+function doReset() {
+  closeConfirm();
+  resetData();
+  D = loadData();
+  populate();
+  toast('Reset to defaults! Save to confirm.', 'info');
 }
 
-// ── COLLECT ALL DATA ──────────────────────────────────────────────────────
-function collectAllData() {
-
-  data.personal = {
-    name: document.getElementById('hero-title1').value,
-    title: document.getElementById('hero-title2').value,
-    email: document.getElementById('contact-email').value,
-    phones: [document.getElementById('about-phone').value],
-    whatsapp: [document.getElementById('contact-whatsapp').value]
-  };
-
-  const statCount = (data.stats || []).length;
-  data.stats = Array.from({length: statCount}, (_, i) => ({
-    value: document.getElementById(`stat-num-${i}`)?.value || '',
-    label: document.getElementById(`stat-label-${i}`)?.value || ''
-  }));
-
-  data.about = {
-    description: getCurrentParagraphs()[0] || '',
-    industries: aboutTags
-  };
-
-  data.services = collectServices();
-  data.process = collectProcess();
-
-  data.caseStudies = collectWork().map(w => ({
-    industry: w.label || w.industry || '',
-    client: w.title || w.client || '',
-    challenge: w.challenge || '',
-    results: w.results || []
-  }));
-
-  const resCount = (data.results || []).length;
-  data.results = Array.from({length: resCount}, (_, i) => ({
-    icon: document.getElementById(`res-icon-${i}`)?.value || '',
-    value: document.getElementById(`res-num-${i}`)?.value || '',
-    description: document.getElementById(`res-label-${i}`)?.value || ''
-  }));
-
-  data.testimonials = [{
-    text: document.getElementById('testimonial-text').value,
-    client: document.getElementById('testimonial-author').value
-  }];
+/* ── TOAST ── */
+function toast(msg, type = 'info') {
+  const icons = { success: '✅', error: '❌', info: '💜' };
+  const tc = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<span class="t-icon">${icons[type]}</span><span>${msg}</span>`;
+  tc.appendChild(t);
+  requestAnimationFrame(() => { requestAnimationFrame(() => { t.classList.add('show'); }); });
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 3500);
 }
 
-// ── TOAST ─────────────────────────────────────────────────────────────────
-function toast(msg, type) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'toast ' + type;
-  if (type) setTimeout(() => { el.className = 'toast'; }, 3500);
-}
-
-// ── INIT ──────────────────────────────────────────────────────────────────
-// Load from localStorage if previously saved
-const saved = localStorage.getItem('ms_gh_config');
-if (saved) {
-  const cfg = JSON.parse(saved);
-  document.getElementById('gh-user').value = cfg.user || '';
-  document.getElementById('gh-repo').value = cfg.repo || '';
-  document.getElementById('gh-branch').value = cfg.branch || 'main';
-  document.getElementById('gh-path').value = cfg.path || 'portfolio.json';
-}
-
-// Auto-save GitHub config (not the token) to localStorage
-['gh-user','gh-repo','gh-branch','gh-path'].forEach(id => {
-  document.getElementById(id).addEventListener('change', () => {
-    localStorage.setItem('ms_gh_config', JSON.stringify({
-      user: document.getElementById('gh-user').value,
-      repo: document.getElementById('gh-repo').value,
-      branch: document.getElementById('gh-branch').value,
-      path: document.getElementById('gh-path').value
-    }));
-  });
-});
+/* ── HELPERS ── */
+function setVal(id, val) { const el = document.getElementById(id); if (el) el.value = val || ''; }
+function getVal(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+function esc(s) { if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 </script>
 </body>
 </html>
