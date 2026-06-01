@@ -1,25 +1,43 @@
 {
   "hero": {
     "badge": "Available for projects",
-    "name": "Mariam Saad",
     "title_line1": "Social Media",
     "title_line2": "Specialist",
     "subtitle": "Helping brands grow through strategic content, creative reels, and marketing campaigns that attract customers and increase engagement.",
-    "description": "I help restaurants, cafés, retail stores, and lifestyle brands build a strong social media presence through engaging content and smart marketing strategies."
+    "description": "I help restaurants, cafÃ©s, retail stores, and lifestyle brands build a strong social media presence through engaging content and smart marketing strategies."
   },
   "stats": [
-    { "number": "50+", "label": "Brands Served" },
-    { "number": "3+", "label": "Years Experience" },
-    { "number": "2M+", "label": "Reach Generated" },
-    { "number": "98%", "label": "Client Satisfaction" }
+    {
+      "number": "50+",
+      "label": "Brands Served"
+    },
+    {
+      "number": "3+",
+      "label": "Years Experience"
+    },
+    {
+      "number": "2M+",
+      "label": "Reach Generated"
+    },
+    {
+      "number": "98%",
+      "label": "Client Satisfaction"
+    }
   ],
   "about": {
     "paragraphs": [
       "I'm Mariam Saad, a Social Media Specialist based in Egypt with a passion for helping brands tell their story in a way that converts followers into customers.",
       "With expertise in content creation, paid advertising, and community management, I've helped dozens of businesses grow their online presence and achieve measurable results.",
-      "I believe that great social media is a blend of creativity and strategy — every post, reel, and campaign should have a purpose."
+      "I believe that great social media is a blend of creativity and strategy â every post, reel, and campaign should have a purpose."
     ],
-    "tags": ["Content Strategy", "Reels & Video", "Paid Ads", "Community Management", "Brand Identity", "Analytics"],
+    "tags": [
+      "Content Strategy",
+      "Reels & Video",
+      "Paid Ads",
+      "Community Management",
+      "Brand Identity",
+      "Analytics"
+    ],
     "contact_info": {
       "location": "Cairo, Egypt",
       "email": "mariam@example.com",
@@ -28,31 +46,47 @@
   },
   "services": [
     {
-      "icon": "📱",
+      "icon": "ð±",
       "title": "Social Media Management",
       "description": "Full management of your social media accounts including content planning, posting, and engagement with your audience."
     },
     {
-      "icon": "🎬",
+      "icon": "ð¬",
       "title": "Reels & Video Content",
       "description": "Creative short-form video content tailored for Instagram, TikTok, and Facebook that drives views and engagement."
     },
     {
-      "icon": "📊",
+      "icon": "ð",
       "title": "Paid Advertising",
       "description": "Strategic Meta and TikTok ad campaigns designed to maximize ROI and reach your ideal customers."
     },
     {
-      "icon": "✍️",
+      "icon": "âï¸",
       "title": "Content Creation",
       "description": "Professional photography direction, copywriting, and graphic design for a cohesive brand aesthetic."
     }
   ],
   "process": [
-    { "step": "01", "title": "Discovery", "description": "We start with a deep dive into your brand, goals, and target audience." },
-    { "step": "02", "title": "Strategy", "description": "I create a custom content and marketing strategy tailored to your business." },
-    { "step": "03", "title": "Execution", "description": "Content is created, scheduled, and published consistently across platforms." },
-    { "step": "04", "title": "Growth", "description": "Monthly reports, optimization, and scaling what works to grow your presence." }
+    {
+      "step": "01",
+      "title": "Discovery",
+      "description": "We start with a deep dive into your brand, goals, and target audience."
+    },
+    {
+      "step": "02",
+      "title": "Strategy",
+      "description": "I create a custom content and marketing strategy tailored to your business."
+    },
+    {
+      "step": "03",
+      "title": "Execution",
+      "description": "Content is created, scheduled, and published consistently across platforms."
+    },
+    {
+      "step": "04",
+      "title": "Growth",
+      "description": "Monthly reports, optimization, and scaling what works to grow your presence."
+    }
   ],
   "work": [
     {
@@ -87,10 +121,26 @@
     }
   ],
   "results": [
-    { "icon": "📈", "number": "300%", "label": "Average follower growth for clients in 90 days" },
-    { "icon": "🎯", "number": "5x", "label": "Average ROAS on paid ad campaigns" },
-    { "icon": "👁️", "number": "2M+", "label": "Total reach generated across all clients" },
-    { "icon": "💬", "number": "98%", "label": "Client retention and satisfaction rate" }
+    {
+      "icon": "ð",
+      "number": "300%",
+      "label": "Average follower growth for clients in 90 days"
+    },
+    {
+      "icon": "ð¯",
+      "number": "5x",
+      "label": "Average ROAS on paid ad campaigns"
+    },
+    {
+      "icon": "ðï¸",
+      "number": "2M+",
+      "label": "Total reach generated across all clients"
+    },
+    {
+      "icon": "ð¬",
+      "number": "98%",
+      "label": "Client retention and satisfaction rate"
+    }
   ],
   "testimonial": {
     "text": "Mariam transformed our social media presence completely. Within 3 months we had 3x the followers and our sales from Instagram doubled. She truly understands how to connect a brand with its audience.",
@@ -98,7 +148,7 @@
   },
   "contact": {
     "email": "mariam@example.com",
-    "whatsapp": "+201000000000",
+    "whatsapp": "+201000000001",
     "instagram": "https://instagram.com/mariamsaad",
     "facebook": "https://facebook.com/mariamsaad",
     "linkedin": "https://linkedin.com/in/mariamsaad",
