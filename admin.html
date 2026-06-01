@@ -614,54 +614,47 @@ function fillContact() {
 
 // ── COLLECT ALL DATA ──────────────────────────────────────────────────────
 function collectAllData() {
-  data.hero = {
-    badge: document.getElementById('hero-badge').value,
-    title_line1: document.getElementById('hero-title1').value,
-    title_line2: document.getElementById('hero-title2').value,
-    subtitle: document.getElementById('hero-subtitle').value,
-    description: document.getElementById('hero-description').value
+
+  data.personal = {
+    name: document.getElementById('hero-title1').value,
+    title: document.getElementById('hero-title2').value,
+    email: document.getElementById('contact-email').value,
+    phones: [document.getElementById('about-phone').value],
+    whatsapp: [document.getElementById('contact-whatsapp').value]
   };
 
   const statCount = (data.stats || []).length;
   data.stats = Array.from({length: statCount}, (_, i) => ({
-    number: document.getElementById(`stat-num-${i}`)?.value || '',
+    value: document.getElementById(`stat-num-${i}`)?.value || '',
     label: document.getElementById(`stat-label-${i}`)?.value || ''
   }));
 
   data.about = {
-    paragraphs: getCurrentParagraphs(),
-    tags: aboutTags,
-    contact_info: {
-      location: document.getElementById('about-location').value,
-      email: document.getElementById('about-email').value,
-      phone: document.getElementById('about-phone').value
-    }
+    description: getCurrentParagraphs()[0] || '',
+    industries: aboutTags
   };
 
   data.services = collectServices();
   data.process = collectProcess();
-  data.work = collectWork();
+
+  data.caseStudies = collectWork().map(w => ({
+    industry: w.label || w.industry || '',
+    client: w.title || w.client || '',
+    challenge: w.challenge || '',
+    results: w.results || []
+  }));
 
   const resCount = (data.results || []).length;
   data.results = Array.from({length: resCount}, (_, i) => ({
     icon: document.getElementById(`res-icon-${i}`)?.value || '',
-    number: document.getElementById(`res-num-${i}`)?.value || '',
-    label: document.getElementById(`res-label-${i}`)?.value || ''
+    value: document.getElementById(`res-num-${i}`)?.value || '',
+    description: document.getElementById(`res-label-${i}`)?.value || ''
   }));
 
-  data.testimonial = {
+  data.testimonials = [{
     text: document.getElementById('testimonial-text').value,
-    author: document.getElementById('testimonial-author').value
-  };
-
-  data.contact = {
-    email: document.getElementById('contact-email').value,
-    whatsapp: document.getElementById('contact-whatsapp').value,
-    instagram: document.getElementById('contact-instagram').value,
-    facebook: document.getElementById('contact-facebook').value,
-    linkedin: document.getElementById('contact-linkedin').value,
-    tiktok: document.getElementById('contact-tiktok').value
-  };
+    client: document.getElementById('testimonial-author').value
+  }];
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────────────
