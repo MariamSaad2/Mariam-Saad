@@ -1,40 +1,414 @@
 /**
- * Mariam Saad — Portfolio Data Loader v2
- * ضع هذا السطر قبل </body> في index.html:
+ * Mariam Saad — Portfolio Data Loader
  * <script src="portfolio-loader.js"></script>
  */
+
 (async function () {
 
-  // ── رابط الـ JSON على GitHub Raw ────────────────────────────────────────
   const JSON_URL = "https://raw.githubusercontent.com/MariamSaad2/Mariam-Saad/main/portfolio.json";
 
-  // ── جلب البيانات ──────────────────────────────────────────────────────
   let d;
+
   try {
     const res = await fetch(JSON_URL + "?nocache=" + Date.now());
+
     if (!res.ok) throw new Error("HTTP " + res.status);
+
     d = await res.json();
-    console.log("✅ portfolio-loader: data loaded", d);
+
+    console.log("✅ portfolio loaded", d);
+
   } catch (e) {
-    console.warn("⚠️ portfolio-loader: failed to load JSON, keeping hardcoded HTML.", e.message);
+    console.warn("⚠️ JSON load failed", e.message);
     return;
   }
 
-  // ── helpers ───────────────────────────────────────────────────────────
   const $ = (s) => document.querySelector(s);
-  const txt = (s, v) => { const el = $(s); if (el && v != null) el.textContent = v; };
-  const htm = (s, v) => { const el = $(s); if (el && v != null) el.innerHTML = v; };
 
-  // ══════════════════════════════════════════════════════════════════════
-  // 1. HERO
-  // ══════════════════════════════════════════════════════════════════════
-  if (d.hero) {
-    const h = d.hero;
-    // Badge
-    htm(".badge", `<span class="badge-dot"></span> ${h.badge || ""}`);
-    // H1
-    htm("h1", `${h.title_line1 || "Social Media"}<br><em>${h.title_line2 || "Specialist"}</em>`);
-    // Subtitle & description
+  const txt = (s, v) => {
+    const el = $(s);
+    if (el && v != null) el.textContent = v;
+  };
+
+  const htm = (s, v) => {
+    const el = $(s);
+    if (el && v != null) el.innerHTML = v;
+  };
+
+  // ====================================================
+  // HERO
+  // ====================================================
+
+  if (d.personal) {
+
+    document.title =
+      `${d.personal.name} — ${d.personal.title}`;
+
+    txt(".hsub", d.personal.title);
+
+    htm(
+      "h1",
+      `${d.personal.name.split(" ")[0]}<br><em>${d.personal.title}</em>`
+    );
+
+    txt(
+      ".hdesc",
+      d.about?.description || ""
+    );
+  }
+
+  // ====================================================
+  // STATS
+  // ====================================================
+
+  if (d.stats?.length) {
+
+    htm(
+      ".stats",
+      d.stats.map(s => `
+        <div class="stat">
+          <div class="stn">${s.value}</div>
+          <div class="stl">${s.label}</div>
+        </div>
+      `).join("")
+    );
+  }
+
+  // ====================================================
+  // ABOUT
+  // ====================================================
+
+  if (d.about) {
+
+    const at = $(".at");
+
+    if (at) {
+
+      const keep = [...at.querySelectorAll("h2, .sl")];
+
+      at.innerHTML = "";
+
+      keep.forEach(el => at.appendChild(el));
+
+      const p = document.createElement("p");
+      p.textContent = d.about.description;
+      at.appendChild(p);
+
+      if (d.about.industries?.length) {
+
+        const tags = document.createElement("div");
+
+        tags.className = "tags";
+
+        tags.innerHTML = d.about.industries
+          .map(i => `<span class="tag">${i}</span>`)
+          .join("");
+
+        at.appendChild(tags);
+      }
+    }
+
+    const acis = document.querySelectorAll(".aci");
+
+    if (acis[0]) {
+      acis[0].innerHTML =
+        `📍 Egypt`;
+    }
+
+    if (acis[1]) {
+      acis[1].innerHTML =
+        `📧 ${d.personal.email}`;
+    }
+
+    if (acis[2]) {
+      acis[2].innerHTML =
+        `📞 ${d.personal.phones?.[0] || ""}`;
+    }
+  }
+
+  // ====================================================
+  // SERVICES
+  // ====================================================
+
+  if (d.services?.length) {
+
+    htm(
+      ".sgrid",
+      d.services.map(s => `
+        <div class="sc">
+          <div class="si2">${s.icon}</div>
+          <div class="st">${s.title}</div>
+          <div class="sd">${s.description}</div>
+        </div>
+      `).join("")
+    );
+  }
+
+  // ====================================================
+  // PROCESS
+  // ====================================================
+
+  if (d.process?.length) {
+
+    htm(
+      ".ptk",
+      d.process.map(p => `
+        <div class="ps2">
+          <div class="snum">${p.step}</div>
+          <div class="stit">${p.title}</div>
+          <div class="sds">${p.description}</div>
+        </div>
+      `).join("")
+    );
+  }
+
+  // ====================================================
+  // CASE STUDIES
+  // ====================================================
+
+  if (d.caseStudies?.length) {
+
+    window._workData = d.caseStudies;
+
+    htm(
+      ".wgrid",
+      d.caseStudies.map((w, i) => `
+        <div class="wc"
+             style="cursor:pointer"
+             onclick="openWork(${i})">
+
+          <div class="wct">
+            <div class="wl">${w.industry}</div>
+            <div class="wtit">${w.client}</div>
+          </div>
+
+          <div class="wb">
+            <div class="wch">${w.challenge}</div>
+
+            <div class="wrs">
+              ${(w.results || [])
+                .map(r => `<div class="wri">${r}</div>`)
+                .join("")}
+            </div>
+          </div>
+
+        </div>
+      `).join("")
+    );
+
+    window.openWork = function (i) {
+
+      const w = window._workData[i];
+
+      if (!w) return;
+
+      const modal = document.getElementById("wmo");
+
+      if (!modal) return;
+
+      const wmd = modal.querySelector(".wmd");
+
+      if (!wmd) return;
+
+      const h3 = wmd.querySelector("h3");
+
+      if (h3) {
+        h3.textContent = w.client;
+      }
+
+      const label = wmd.querySelector(".wl");
+
+      if (label) {
+        label.textContent = w.industry;
+      }
+
+      const container = wmd.querySelector(".wmg");
+
+      if (container) {
+
+        container.innerHTML = `
+          <div class="wms">
+            <h4>Challenge</h4>
+            <p>${w.challenge}</p>
+          </div>
+
+          <div class="wms">
+            <h4>Results</h4>
+            <ul>
+              ${(w.results || [])
+                .map(r => `<li>${r}</li>`)
+                .join("")}
+            </ul>
+          </div>
+
+          ${
+            w.strategyFocus?.length
+              ? `
+                <div class="wms">
+                  <h4>Strategy Focus</h4>
+                  <ul>
+                    ${w.strategyFocus
+                      .map(x => `<li>${x}</li>`)
+                      .join("")}
+                  </ul>
+                </div>
+              `
+              : ""
+          }
+
+          ${
+            w.contentTypes?.length
+              ? `
+                <div class="wms">
+                  <h4>Content Types</h4>
+                  <ul>
+                    ${w.contentTypes
+                      .map(x => `<li>${x}</li>`)
+                      .join("")}
+                  </ul>
+                </div>
+              `
+              : ""
+          }
+        `;
+      }
+
+      modal.classList.add("active");
+    };
+  }
+
+  // ====================================================
+  // RESULTS
+  // ====================================================
+
+  if (d.results?.length) {
+
+    htm(
+      ".rgrid",
+      d.results.map(r => `
+        <div class="rc">
+
+          <div class="ri">
+            ${r.icon}
+          </div>
+
+          <div>
+            <div class="rn">${r.value}</div>
+            <div class="rt">${r.description}</div>
+          </div>
+
+        </div>
+      `).join("")
+    );
+  }
+
+  // ====================================================
+  // TESTIMONIAL
+  // ====================================================
+
+  if (d.testimonials?.length) {
+
+    txt(
+      ".tt",
+      d.testimonials[0].text
+    );
+
+    const tc = $(".tc");
+
+    if (tc) {
+
+      const ps = [...tc.querySelectorAll("p")]
+        .filter(p => !p.classList.contains("tt"));
+
+      if (ps.length) {
+
+        ps[ps.length - 1].textContent =
+          "— " + d.testimonials[0].client;
+      }
+    }
+  }
+
+  // ====================================================
+  // CONTACT
+  // ====================================================
+
+  if (d.personal) {
+
+    const links = [
+
+      {
+        href: `mailto:${d.personal.email}`,
+        icon: "📧",
+        label: d.personal.email
+      },
+
+      ...(d.personal.whatsapp || []).map(w => ({
+        href: w,
+        icon: "💬",
+        label: "WhatsApp"
+      }))
+    ];
+
+    const cls = $(".cls");
+
+    if (cls) {
+
+      cls.innerHTML = links.map(link => `
+        <a class="cl"
+           href="${link.href}"
+           target="_blank"
+           rel="noopener">
+          ${link.icon} ${link.label}
+        </a>
+      `).join("");
+    }
+
+    const cmo = document.getElementById("cmo");
+
+    if (cmo) {
+
+      const md = cmo.querySelector(".md");
+
+      if (md) {
+
+        md.querySelectorAll(".mci")
+          .forEach(el => el.remove());
+
+        links.forEach(link => {
+
+          const a = document.createElement("a");
+
+          a.className = "mci";
+          a.href = link.href;
+          a.target = "_blank";
+          a.rel = "noopener";
+
+          a.innerHTML =
+            `${link.icon} ${link.label}`;
+
+          md.appendChild(a);
+        });
+      }
+    }
+  }
+
+  // ====================================================
+  // FOOTER INITIALS
+  // ====================================================
+
+  const fn = $(".fn");
+
+  if (fn && d.personal?.name) {
+
+    fn.textContent =
+      d.personal.name
+        .split(" ")
+        .map(x => x[0])
+        .join("")
+        .toUpperCase();
+  }
+
+})();    // Subtitle & description
     txt(".hsub", h.subtitle);
     txt(".hdesc", h.description);
     // Page title
