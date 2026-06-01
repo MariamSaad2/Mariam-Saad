@@ -1,157 +1,131 @@
 {
-  "hero": {
-    "badge": "Available for projects",
-    "title_line1": "Social Media",
-    "title_line2": "Specialist",
-    "subtitle": "Helping brands grow through strategic content, creative reels, and marketing campaigns that attract customers and increase engagement.",
-    "description": "I help restaurants, cafÃ©s, retail stores, and lifestyle brands build a strong social media presence through engaging content and smart marketing strategies."
+  "personal": {
+    "name": "Mariam Saad",
+    "title": "Social Media Specialist",
+    "email": "mariamsssd75@gmail.com",
+    "phones": [
+      "01289389948",
+      "01029234450"
+    ],
+    "whatsapp": [
+      "https://wa.me/201289389948",
+      "https://wa.me/201029234450"
+    ]
   },
   "stats": [
-    {
-      "number": "50+",
-      "label": "Brands Served"
-    },
-    {
-      "number": "3+",
-      "label": "Years Experience"
-    },
-    {
-      "number": "2M+",
-      "label": "Reach Generated"
-    },
-    {
-      "number": "98%",
-      "label": "Client Satisfaction"
-    }
+    { "value": "40%", "label": "Engagement Increase" },
+    { "value": "120K+", "label": "Reels Views" },
+    { "value": "10+", "label": "Brands Managed" },
+    { "value": "4", "label": "Industries Served" }
+  ],
+  "badges": [
+    { "value": "120K+", "label": "Reels Views" },
+    { "value": "40%", "label": "Engagement ↑" }
   ],
   "about": {
-    "paragraphs": [
-      "I'm Mariam Saad, a Social Media Specialist based in Egypt with a passion for helping brands tell their story in a way that converts followers into customers.",
-      "With expertise in content creation, paid advertising, and community management, I've helped dozens of businesses grow their online presence and achieve measurable results.",
-      "I believe that great social media is a blend of creativity and strategy â every post, reel, and campaign should have a purpose."
-    ],
-    "tags": [
-      "Content Strategy",
-      "Reels & Video",
-      "Paid Ads",
-      "Community Management",
-      "Brand Identity",
-      "Analytics"
-    ],
-    "contact_info": {
-      "location": "Cairo, Egypt",
-      "email": "mariam@example.com",
-      "phone": "+20 100 000 0000"
-    }
+    "description": "Social Media Specialist with experience in content creation, strategy, and brand management across multiple industries.",
+    "industries": ["Malls", "Restaurants", "Cafés", "Retail businesses"]
   },
   "services": [
     {
-      "icon": "ð±",
+      "icon": "📱",
       "title": "Social Media Management",
-      "description": "Full management of your social media accounts including content planning, posting, and engagement with your audience."
+      "description": "Managing social media accounts through strategic planning, consistent posting, audience engagement, and performance tracking."
     },
     {
-      "icon": "ð¬",
-      "title": "Reels & Video Content",
-      "description": "Creative short-form video content tailored for Instagram, TikTok, and Facebook that drives views and engagement."
+      "icon": "🎯",
+      "title": "Content Strategy",
+      "description": "Developing monthly content plans tailored to the brand's goals, target audience, and marketing objectives."
     },
     {
-      "icon": "ð",
-      "title": "Paid Advertising",
-      "description": "Strategic Meta and TikTok ad campaigns designed to maximize ROI and reach your ideal customers."
+      "icon": "🎬",
+      "title": "Reels & Short-Form Content",
+      "description": "Creating engaging reels ideas designed to increase reach, visibility, and audience interaction."
     },
     {
-      "icon": "âï¸",
-      "title": "Content Creation",
-      "description": "Professional photography direction, copywriting, and graphic design for a cohesive brand aesthetic."
+      "icon": "📣",
+      "title": "Marketing Campaigns",
+      "description": "Planning and executing promotional campaigns for events, product launches, and seasonal offers."
     }
   ],
   "process": [
     {
-      "step": "01",
-      "title": "Discovery",
-      "description": "We start with a deep dive into your brand, goals, and target audience."
+      "step": 1,
+      "title": "Brand Research",
+      "description": "Understanding the brand, target audience, and competitors."
     },
     {
-      "step": "02",
-      "title": "Strategy",
-      "description": "I create a custom content and marketing strategy tailored to your business."
+      "step": 2,
+      "title": "Content Strategy",
+      "description": "Creating a clear content strategy aligned with business goals."
     },
     {
-      "step": "03",
-      "title": "Execution",
-      "description": "Content is created, scheduled, and published consistently across platforms."
+      "step": 3,
+      "title": "Content Creation",
+      "description": "Developing engaging posts, reels, and marketing campaigns."
     },
     {
-      "step": "04",
-      "title": "Growth",
-      "description": "Monthly reports, optimization, and scaling what works to grow your presence."
+      "step": 4,
+      "title": "Performance Analysis",
+      "description": "Tracking results and improving content performance."
     }
   ],
-  "work": [
+  "caseStudies": [
     {
-      "label": "Restaurant / F&B",
-      "title": "Aklagy Restaurant",
-      "challenge": "Low engagement and no consistent brand presence on social media.",
+      "client": "West Arena Mall",
+      "industry": "Mall · Retail",
+      "challenge": "The mall needed stronger social media engagement and more visibility for events, promotions, and store activities.",
       "results": [
-        "300% increase in Instagram followers in 3 months",
-        "Reels reaching 50K+ views regularly",
-        "20% increase in walk-in customers from social"
+        "Increased engagement on posts and reels",
+        "Higher reach through short-form video",
+        "Improved brand visibility on social media",
+        "Stronger audience interaction"
+      ],
+      "strategyFocus": [
+        "Event coverage",
+        "Promotional campaigns",
+        "Interactive posts",
+        "Reels showcasing mall experience"
+      ],
+      "contentTypes": [
+        "Post designs",
+        "Carousel posts",
+        "Reels",
+        "Campaign visuals",
+        "Event coverage"
       ]
     },
     {
-      "label": "Retail / Fashion",
-      "title": "Style Boutique",
-      "challenge": "New brand needing to build awareness from scratch.",
+      "client": "Restaurant Social Media Growth",
+      "industry": "Food & Beverage",
+      "challenge": "The restaurant wanted to attract more customers and increase visibility through engaging food content.",
       "results": [
-        "10K followers in first 60 days",
-        "First paid campaign achieving 5x ROAS",
-        "Sold out product launch via Instagram Stories"
+        "Increased engagement on food posts",
+        "Higher reach through reels content",
+        "Improved brand presence on Instagram"
       ]
     },
     {
-      "label": "Beauty / Lifestyle",
-      "title": "Glow Beauty Studio",
-      "challenge": "Inconsistent content and low appointment bookings.",
+      "client": "Café Social Media Strategy",
+      "industry": "Lifestyle · Café",
+      "challenge": "The café needed a stronger online presence and more engaging content to attract customers.",
       "results": [
-        "40% increase in monthly bookings",
-        "Viral reel with 200K+ views",
-        "Built strong community of 8K engaged followers"
+        "Increased engagement on reels",
+        "Stronger brand identity on social media",
+        "Improved reach and visibility"
       ]
     }
   ],
   "results": [
-    {
-      "icon": "ð",
-      "number": "300%",
-      "label": "Average follower growth for clients in 90 days"
-    },
-    {
-      "icon": "ð¯",
-      "number": "5x",
-      "label": "Average ROAS on paid ad campaigns"
-    },
-    {
-      "icon": "ðï¸",
-      "number": "2M+",
-      "label": "Total reach generated across all clients"
-    },
-    {
-      "icon": "ð¬",
-      "number": "98%",
-      "label": "Client retention and satisfaction rate"
-    }
+    { "icon": "📈", "value": "40%", "description": "Increase in engagement through strategic content planning" },
+    { "icon": "🎬", "value": "120K+", "description": "Views generated on reels and short-form video content" },
+    { "icon": "🌐", "value": "↑", "description": "Improved brand visibility across social media platforms" },
+    { "icon": "🎯", "value": "✓", "description": "Successful promotional campaigns for events and offers" }
   ],
-  "testimonial": {
-    "text": "Mariam transformed our social media presence completely. Within 3 months we had 3x the followers and our sales from Instagram doubled. She truly understands how to connect a brand with its audience.",
-    "author": "Ahmed K., Restaurant Owner"
-  },
-  "contact": {
-    "email": "mariam@example.com",
-    "whatsapp": "+201000000001",
-    "instagram": "https://instagram.com/mariamsaad222",
-    "facebook": "https://facebook.com/mariamsaad",
-    "linkedin": "https://linkedin.com/in/mariamsaad",
-    "tiktok": "https://tiktok.com/@mariamsaad"
-  }
+  "testimonials": [
+    {
+      "text": "Mariam helped us create engaging content and improve our social media presence. Her strategic approach made a real difference in how our brand connects with customers online.",
+      "client": "West Arena Mall"
+    }
+  ]
 }
