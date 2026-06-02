@@ -4,42 +4,95 @@
     "title_line1": "Social Media",
     "title_line2": "Specialist",
     "subtitle": "Helping brands grow through strategic content, creative reels, and marketing campaigns that attract customers and increase engagement.",
-    "description": "I help restaurants, cafés, retail stores, and lifestyle brands build a strong social media presence through engaging content and smart marketing strategies."
+    "description": "I help restaurants, cafÃ©s, retail stores, and lifestyle brands build a strong social media presence through engaging content and smart marketing strategies."
   },
   "stats": [
-    { "number": "40%",  "label": "Engagement Increase" },
-    { "number": "120K+","label": "Reels Views" },
-    { "number": "10+",  "label": "Brands Managed" },
-    { "number": "4",    "label": "Industries Served" }
+    {
+      "number": "60%",
+      "label": "Engagement Increase"
+    },
+    {
+      "number": "120K+",
+      "label": "Reels Views"
+    },
+    {
+      "number": "10+",
+      "label": "Brands Managed"
+    },
+    {
+      "number": "4",
+      "label": "Industries Served"
+    }
   ],
   "about": {
     "paragraphs": [
       "I focus on creating strategic and engaging content that helps brands attract customers, increase visibility, and build a strong online presence.",
       "My approach combines creativity with marketing strategy to turn social media platforms into powerful tools for business growth."
     ],
-    "tags": ["Content Strategy","Social Media Management","Reels","Marketing Campaigns","Brand Growth","Post designs","Carousel posts","Campaign visuals","Event coverage"],
+    "tags": [
+      "Content Strategy",
+      "Social Media Management",
+      "Reels",
+      "Marketing Campaigns",
+      "Brand Growth",
+      "Post designs",
+      "Carousel posts",
+      "Campaign visuals",
+      "Event coverage"
+    ],
     "contact_info": {
-      "name": "Mariam Saad",
-      "role": "Social Media Specialist",
+      "location": "",
       "email": "mariamsssd75@gmail.com",
-      "phone": "01289389948 · 01029234450"
+      "phone": "01289389948 Â· 01029234450"
     }
   },
   "services": [
-    { "icon": "📱", "title": "Social Media Management", "description": "Managing social media accounts through strategic planning, consistent posting, audience engagement, and performance tracking." },
-    { "icon": "🎯", "title": "Content Strategy", "description": "Developing monthly content plans tailored to the brand's goals, target audience, and marketing objectives." },
-    { "icon": "🎬", "title": "Reels & Short-Form Content", "description": "Creating engaging reels ideas designed to increase reach, visibility, and audience interaction." },
-    { "icon": "📣", "title": "Marketing Campaigns", "description": "Planning and executing promotional campaigns for events, product launches, and seasonal offers." }
+    {
+      "icon": "ð±",
+      "title": "Social Media Management",
+      "description": "Managing social media accounts through strategic planning, consistent posting, audience engagement, and performance tracking."
+    },
+    {
+      "icon": "ð¯",
+      "title": "Content Strategy",
+      "description": "Developing monthly content plans tailored to the brand's goals, target audience, and marketing objectives."
+    },
+    {
+      "icon": "ð¬",
+      "title": "Reels & Short-Form Content",
+      "description": "Creating engaging reels ideas designed to increase reach, visibility, and audience interaction."
+    },
+    {
+      "icon": "ð£",
+      "title": "Marketing Campaigns",
+      "description": "Planning and executing promotional campaigns for events, product launches, and seasonal offers."
+    }
   ],
   "process": [
-    { "step": "1", "title": "Brand Research",    "description": "Understanding the brand, target audience, and competitors." },
-    { "step": "2", "title": "Content Strategy",  "description": "Creating a clear content strategy aligned with business goals." },
-    { "step": "3", "title": "Content Creation",  "description": "Developing engaging posts, reels, and marketing campaigns." },
-    { "step": "4", "title": "Performance Analysis","description": "Tracking results and improving content performance." }
+    {
+      "step": "1",
+      "title": "Brand Research",
+      "description": "Understanding the brand, target audience, and competitors."
+    },
+    {
+      "step": "2",
+      "title": "Content Strategy",
+      "description": "Creating a clear content strategy aligned with business goals."
+    },
+    {
+      "step": "3",
+      "title": "Content Creation",
+      "description": "Developing engaging posts, reels, and marketing campaigns."
+    },
+    {
+      "step": "4",
+      "title": "Performance Analysis",
+      "description": "Tracking results and improving content performance."
+    }
   ],
   "work": [
     {
-      "label": "Mall · Retail",
+      "label": "Mall Â· Retail",
       "title": "West Arena Mall",
       "challenge": "The mall needed stronger social media engagement and more visibility for events, promotions, and store activities.",
       "results": [
@@ -60,9 +113,9 @@
       ]
     },
     {
-      "label": "Lifestyle · Café",
-      "title": "Café Social Media Strategy",
-      "challenge": "The café needed a stronger online presence and more engaging content to attract customers.",
+      "label": "Lifestyle Â· CafÃ©",
+      "title": "CafÃ© Social Media Strategy",
+      "challenge": "The cafÃ© needed a stronger online presence and more engaging content to attract customers.",
       "results": [
         "Increased engagement on reels",
         "Stronger brand identity on social media",
@@ -71,10 +124,26 @@
     }
   ],
   "results": [
-    { "icon": "📈", "number": "40%",  "label": "Increase in engagement through strategic content planning" },
-    { "icon": "🎬", "number": "120K+","label": "Views generated on reels and short-form video content" },
-    { "icon": "🌐", "number": "↑",   "label": "Improved brand visibility across social media platforms" },
-    { "icon": "🎯", "number": "✓",   "label": "Successful promotional campaigns for events and offers" }
+    {
+      "icon": "ð",
+      "number": "40%",
+      "label": "Increase in engagement through strategic content planning"
+    },
+    {
+      "icon": "ð¬",
+      "number": "120K+",
+      "label": "Views generated on reels and short-form video content"
+    },
+    {
+      "icon": "ð",
+      "number": "â",
+      "label": "Improved brand visibility across social media platforms"
+    },
+    {
+      "icon": "ð¯",
+      "number": "â",
+      "label": "Successful promotional campaigns for events and offers"
+    }
   ],
   "testimonial": {
     "text": "Mariam helped us create engaging content and improve our social media presence. Her strategic approach made a real difference in how our brand connects with customers online.",
