@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mariam Saad — Portfolio Admin</title>
+<style>
+:root {
+  --black: #08080a;
+  --deep: #0d0d12;
+  --card: #111118;
+  --purple: #7c3aed;
+  --pl: #a855f7;
+  --pg: rgba(124,58,237,.3);
+  --ps: rgba(168,85,247,.12);
+  --white: #f8f6ff;
+  --gray: #9999b3;
+  --border: rgba(124,58,237,.2);
+  --green: #22c55e;
+  --red: #ef4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--black);color:var(--white);font-family:'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.6;}
+
+/* TOP BAR */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(8,8,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
+.topbar-logo{font-weight:800;font-size:16px;background:linear-gradient(135deg,var(--white),var(--pl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.topbar-actions{display:flex;align-items:center;gap:10px;}
+.gh-status{font-size:11px;color:var(--gray);padding:4px 10px;border:1px solid var(--border);border-radius:20px;}
+.gh-status.ok{color:var(--green);border-color:rgba(34,197,94,.3);}
+.gh-status.err{color:var(--red);border-color:rgba(239,68,68,.3);}
+.save-btn{background:var(--purple);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s;}
+.save-btn:hover{opacity:.85;}
+.save-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 57px);}
+
+/* SIDEBAR */
+.sidebar{background:var(--deep);border-right:1px solid var(--border);padding:20px 0;}
+.sidebar-section{margin-bottom:24px;}
+.sidebar-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#555;padding:0 16px;margin-bottom:8px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;color:var(--gray);font-size:13px;border-left:2px solid transparent;transition:all .2s;}
+.nav-item:hover{color:var(--white);background:rgba(124,58,237,.06);}
+.nav-item.active{color:var(--pl);border-left-color:var(--pl);background:rgba(124,58,237,.08);}
+.nav-item .icon{font-size:15px;width:20px;text-align:center;}
+
+/* MAIN */
+.main{padding:28px 32px;overflow-y:auto;}
+.page{display:none;}
+.page.active{display:block;}
+
+/* GH CONFIG */
+.gh-config{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:28px;}
+.gh-config-title{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--pl);margin-bottom:16px;}
+.gh-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.gh-grid-full{grid-column:1/-1;}
+
+/* FORM ELEMENTS */
+.field{margin-bottom:16px;}
+.label{font-size:11px;font-weight:500;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;display:block;}
+input[type=text],input[type=email],input[type=password],input[type=url],textarea,select{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;
+  color:var(--white);font-size:13px;padding:9px 12px;font-family:inherit;transition:border-color .2s;
+}
+input:focus,textarea:focus{outline:none;border-color:var(--purple);}
+textarea{resize:vertical;min-height:80px;}
+
+/* SECTION CARDS */
+.section-title{font-size:20px;font-weight:700;margin-bottom:6px;}
+.section-sub{color:var(--gray);font-size:13px;margin-bottom:24px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.card-title{font-size:13px;font-weight:600;color:var(--pl);}
+.del-btn{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:var(--red);border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer;transition:all .2s;}
+.del-btn:hover{background:rgba(239,68,68,.2);}
+.add-btn{display:flex;align-items:center;gap:8px;background:var(--ps);border:1px solid var(--border);border-radius:8px;color:var(--pl);font-size:13px;padding:10px 16px;cursor:pointer;transition:all .2s;margin-top:4px;}
+.add-btn:hover{border-color:var(--purple);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+/* TAGS */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.tag-pill{display:flex;align-items:center;gap:6px;background:var(--ps);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:12px;color:var(--pl);}
+.tag-pill button{background:none;border:none;cursor:pointer;color:var(--gray);font-size:14px;line-height:1;padding:0;}
+.tag-input-row{display:flex;gap:8px;margin-top:10px;}
+.tag-input-row input{flex:1;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:999;transform:translateY(80px);opacity:0;transition:all .3s;}
+.toast.success{background:#15803d;color:#fff;transform:translateY(0);opacity:1;}
+.toast.error{background:#b91c1c;color:#fff;transform:translateY(0);opacity:1;}
+
+/* RESULTS TABLE */
+.results-row{display:grid;grid-template-columns:60px 100px 1fr;gap:12px;align-items:center;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">MS. Admin Panel</div>
+  <div class="topbar-actions">
+    <span class="gh-status" id="ghStatus">Not connected</span>
+    <button class="save-btn" id="saveBtn" onclick="saveToGitHub()">💾 Save to GitHub</button>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Setup</div>
+      <div class="nav-item active" onclick="showPage('github')"><span class="icon">⚙️</span> GitHub Config</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Content</div>
+      <div class="nav-item" onclick="showPage('hero')"><span class="icon">🏠</span> Hero Section</div>
+      <div class="nav-item" onclick="showPage('stats')"><span class="icon">📊</span> Stats Numbers</div>
+      <div class="nav-item" onclick="showPage('about')"><span class="icon">👤</span> About Me</div>
+      <div class="nav-item" onclick="showPage('services')"><span class="icon">🛠️</span> Services</div>
+      <div class="nav-item" onclick="showPage('process')"><span class="icon">🔄</span> My Process</div>
+      <div class="nav-item" onclick="showPage('work')"><span class="icon">💼</span> Work Cases</div>
+      <div class="nav-item" onclick="showPage('results')"><span class="icon">🏆</span> Results</div>
+      <div class="nav-item" onclick="showPage('testimonial')"><span class="icon">💬</span> Testimonial</div>
+      <div class="nav-item" onclick="showPage('contact')"><span class="icon">📱</span> Contact Links</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- GITHUB CONFIG PAGE -->
+    <div class="page active" id="page-github">
+      <div class="section-title">GitHub Configuration</div>
+      <div class="section-sub">Connect once — all changes save directly to your GitHub repo</div>
+      <div class="gh-config">
+        <div class="gh-config-title">🔑 GitHub Credentials</div>
+        <div class="gh-grid">
+          <div class="field">
+            <label class="label">GitHub Username</label>
+            <input type="text" id="gh-user" placeholder="MariamSaad2" />
+          </div>
+          <div class="field">
+            <label class="label">Repository Name</label>
+            <input type="text" id="gh-repo" placeholder="Mariam-Saad" />
+          </div>
+          <div class="field">
+            <label class="label">Branch</label>
+            <input type="text" id="gh-branch" value="main" />
+          </div>
+          <div class="field gh-grid-full">
+            <label class="label">Personal Access Token (Fine-grained, Contents: Read & Write)</label>
+            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+          </div>
+          <div class="field gh-grid-full">
+            <label class="label">JSON File Path in Repo</label>
+            <input type="text" id="gh-path" value="portfolio.json" />
+          </div>
+        </div>
+        <button class="add-btn" onclick="loadFromGitHub()">📥 Load current data from GitHub</button>
+      </div>
+      <div class="card" style="border-color:rgba(34,197,94,.2);background:rgba(34,197,94,.04);">
+        <div style="color:var(--green);font-size:13px;font-weight:600;margin-bottom:10px;">How to create a GitHub Token</div>
+        <div style="color:var(--gray);font-size:12px;line-height:1.8;">
+          1. Go to GitHub → Settings → Developer settings<br>
+          2. Personal access tokens → Fine-grained tokens → Generate new token<br>
+          3. Set Repository access: Only select repositories → choose your portfolio repo<br>
+          4. Permissions → Repository permissions → Contents → Read and Write<br>
+          5. Copy the token and paste it above (it only shows once!)
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO PAGE -->
+    <div class="page" id="page-hero">
+      <div class="section-title">Hero Section</div>
+      <div class="section-sub">The first thing visitors see on your portfolio</div>
+      <div class="card">
+        <div class="field"><label class="label">Badge Text (small top badge)</label><input type="text" id="hero-badge" placeholder="Available for projects" /></div>
+        <div class="two-col">
+          <div class="field"><label class="label">Title Line 1</label><input type="text" id="hero-title1" placeholder="Social Media" /></div>
+          <div class="field"><label class="label">Title Line 2 (colored)</label><input type="text" id="hero-title2" placeholder="Specialist" /></div>
+        </div>
+        <div class="field"><label class="label">Subtitle (larger text under title)</label><textarea id="hero-subtitle" rows="2"></textarea></div>
+        <div class="field"><label class="label">Description (smaller gray text)</label><textarea id="hero-description" rows="2"></textarea></div>
+      </div>
+    </div>
+
+    <!-- STATS PAGE -->
+    <div class="page" id="page-stats">
+      <div class="section-title">Stats Numbers</div>
+      <div class="section-sub">The 4 achievement numbers shown below the hero</div>
+      <div id="stats-container"></div>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div class="page" id="page-about">
+      <div class="section-title">About Me</div>
+      <div class="section-sub">Your bio paragraphs, tags, and contact info in the about section</div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">Bio Paragraphs</div></div>
+        <div id="about-paragraphs"></div>
+        <button class="add-btn" onclick="addParagraph()">+ Add Paragraph</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">Skill Tags</div></div>
+        <div id="about-tags" class="tags-wrap"></div>
+        <div class="tag-input-row">
+          <input type="text" id="new-tag" placeholder="e.g. Content Strategy" onkeydown="if(event.key==='Enter')addTag()" />
+          <button class="add-btn" onclick="addTag()">+ Add</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">Contact Info (shown in About card)</div></div>
+        <div class="three-col">
+          <div class="field"><label class="label">Location</label><input type="text" id="about-location" placeholder="Cairo, Egypt" /></div>
+          <div class="field"><label class="label">Email</label><input type="email" id="about-email" /></div>
+          <div class="field"><label class="label">Phone</label><input type="text" id="about-phone" /></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES PAGE -->
+    <div class="page" id="page-services">
+      <div class="section-title">Services</div>
+      <div class="section-sub">The services you offer — shown as cards</div>
+      <div id="services-container"></div>
+      <button class="add-btn" onclick="addService()">+ Add Service</button>
+    </div>
+
+    <!-- PROCESS PAGE -->
+    <div class="page" id="page-process">
+      <div class="section-title">My Process</div>
+      <div class="section-sub">The step-by-step numbered process</div>
+      <div id="process-container"></div>
+      <button class="add-btn" onclick="addProcessStep()">+ Add Step</button>
+    </div>
+
+    <!-- WORK PAGE -->
+    <div class="page" id="page-work">
+      <div class="section-title">Work Cases</div>
+      <div class="section-sub">Real client projects and results</div>
+      <div id="work-container"></div>
+      <button class="add-btn" onclick="addWorkCase()">+ Add Case Study</button>
+    </div>
+
+    <!-- RESULTS PAGE -->
+    <div class="page" id="page-results">
+      <div class="section-title">Results</div>
+      <div class="section-sub">The 4 key result metrics shown in the results section</div>
+      <div id="results-container"></div>
+    </div>
+
+    <!-- TESTIMONIAL PAGE -->
+    <div class="page" id="page-testimonial">
+      <div class="section-title">Testimonial</div>
+      <div class="section-sub">The client quote shown on your portfolio</div>
+      <div class="card">
+        <div class="field"><label class="label">Quote Text</label><textarea id="testimonial-text" rows="4"></textarea></div>
+        <div class="field"><label class="label">Author (name + role)</label><input type="text" id="testimonial-author" placeholder="Ahmed K., Restaurant Owner" /></div>
+      </div>
+    </div>
+
+    <!-- CONTACT PAGE -->
+    <div class="page" id="page-contact">
+      <div class="section-title">Contact Links</div>
+      <div class="section-sub">How clients can reach you</div>
+      <div class="card">
+        <div class="two-col">
+          <div class="field"><label class="label">📧 Email</label><input type="email" id="contact-email" /></div>
+          <div class="field"><label class="label">📱 WhatsApp Number</label><input type="text" id="contact-whatsapp" placeholder="+201000000000" /></div>
+          <div class="field"><label class="label">📸 Instagram URL</label><input type="url" id="contact-instagram" placeholder="https://instagram.com/..." /></div>
+          <div class="field"><label class="label">📘 Facebook URL</label><input type="url" id="contact-facebook" placeholder="https://facebook.com/..." /></div>
+          <div class="field"><label class="label">💼 LinkedIn URL</label><input type="url" id="contact-linkedin" placeholder="https://linkedin.com/in/..." /></div>
+          <div class="field"><label class="label">🎵 TikTok URL</label><input type="url" id="contact-tiktok" placeholder="https://tiktok.com/@..." /></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────────
+let data = {};
+let fileSha = null;
+let aboutTags = [];
+let workResults = {}; // store results arrays per work index
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── GITHUB ────────────────────────────────────────────────────────────────
+function ghConfig() {
+  return {
+    token: document.getElementById('gh-token').value.trim(),
+    user: document.getElementById('gh-user').value.trim(),
+    repo: document.getElementById('gh-repo').value.trim(),
+    branch: document.getElementById('gh-branch').value.trim() || 'main',
+    path: document.getElementById('gh-path').value.trim()
+  };
+}
+
+async function loadFromGitHub() {
+  const c = ghConfig();
+  if (!c.token || !c.user || !c.repo) { toast('Fill in GitHub credentials first', 'error'); return; }
+  toast('Loading from GitHub...', '');
+  try {
+    const res = await fetch(`https://api.github.com/repos/${c.user}/${c.repo}/contents/${c.path}?ref=${c.branch}`, {
+      headers: { Authorization: `Bearer ${c.token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (!res.ok) throw new Error(`GitHub error: ${res.status}`);
+    const json = await res.json();
+    fileSha = json.sha;
+    data = JSON.parse(atob(json.content.replace(/\n/g, '')));
+    fillAllForms();
+    setStatus('Connected', 'ok');
+    toast('Data loaded successfully ✓', 'success');
+  } catch(e) {
+    setStatus('Error', 'err');
+    toast(e.message, 'error');
+  }
+}
+
+async function saveToGitHub() {
+  const c = ghConfig();
+  if (!c.token || !c.user || !c.repo) { toast('Fill in GitHub credentials first', 'error'); return; }
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  collectAllData();
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  const body = { message: 'Update portfolio content via admin panel', content, branch: c.branch };
+  if (fileSha) body.sha = fileSha;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${c.user}/${c.repo}/contents/${c.path}`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${c.token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.message || 'Save failed');
+    fileSha = json.content.sha;
+    toast('Saved to GitHub ✓ Portfolio updated!', 'success');
+  } catch(e) {
+    toast(e.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = '💾 Save to GitHub';
+  }
+}
+
+function setStatus(text, cls) {
+  const el = document.getElementById('ghStatus');
+  el.textContent = text;
+  el.className = 'gh-status ' + cls;
+}
+
+// ── FILL FORMS ────────────────────────────────────────────────────────────
+function fillAllForms() {
+  fillHero(); fillStats(); fillAbout(); fillServices(); fillProcess(); fillWork(); fillResults(); fillTestimonial(); fillContact();
+}
+
+function fillHero() {
+  const h = data.hero || {};
+  document.getElementById('hero-badge').value = h.badge || '';
+  document.getElementById('hero-title1').value = h.title_line1 || '';
+  document.getElementById('hero-title2').value = h.title_line2 || '';
+  document.getElementById('hero-subtitle').value = h.subtitle || '';
+  document.getElementById('hero-description').value = h.description || '';
+}
+
+function fillStats() {
+  const stats = data.stats || [];
+  const c = document.getElementById('stats-container');
+  c.innerHTML = stats.map((s, i) => `
+    <div class="card">
+      <div class="card-header"><div class="card-title">Stat #${i+1}</div></div>
+      <div class="two-col">
+        <div class="field"><label class="label">Number / Value</label><input type="text" id="stat-num-${i}" value="${s.number || ''}" placeholder="50+" /></div>
+        <div class="field"><label class="label">Label</label><input type="text" id="stat-label-${i}" value="${s.label || ''}" placeholder="Brands Served" /></div>
+      </div>
+    </div>`).join('');
+}
+
+function fillAbout() {
+  const a = data.about || {};
+  const paras = a.paragraphs || [];
+  renderParagraphs(paras);
+  aboutTags = [...(a.tags || [])];
+  renderTags();
+  const ci = a.contact_info || {};
+  document.getElementById('about-location').value = ci.location || '';
+  document.getElementById('about-email').value = ci.email || '';
+  document.getElementById('about-phone').value = ci.phone || '';
+}
+
+function renderParagraphs(paras) {
+  const c = document.getElementById('about-paragraphs');
+  c.innerHTML = paras.map((p, i) => `
+    <div style="display:flex;gap:8px;margin-bottom:10px;align-items:flex-start">
+      <textarea id="para-${i}" rows="2" style="flex:1">${p}</textarea>
+      <button class="del-btn" onclick="removeParagraph(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addParagraph() {
+  const paras = getCurrentParagraphs();
+  paras.push('');
+  renderParagraphs(paras);
+}
+
+function removeParagraph(i) {
+  const paras = getCurrentParagraphs();
+  paras.splice(i, 1);
+  renderParagraphs(paras);
+}
+
+function getCurrentParagraphs() {
+  const paras = [];
+  let i = 0;
+  while (document.getElementById(`para-${i}`)) {
+    paras.push(document.getElementById(`para-${i}`).value);
+    i++;
+  }
+  return paras;
+}
+
+function renderTags() {
+  document.getElementById('about-tags').innerHTML = aboutTags.map((t, i) =>
+    `<span class="tag-pill">${t}<button onclick="removeTag(${i})">×</button></span>`).join('');
+}
+
+function addTag() {
+  const inp = document.getElementById('new-tag');
+  if (inp.value.trim()) { aboutTags.push(inp.value.trim()); inp.value = ''; renderTags(); }
+}
+
+function removeTag(i) { aboutTags.splice(i, 1); renderTags(); }
+
+function fillServices() {
+  const services = data.services || [];
+  const c = document.getElementById('services-container');
+  c.innerHTML = services.map((s, i) => `
+    <div class="card" id="svc-${i}">
+      <div class="card-header"><div class="card-title">Service ${i+1}</div><button class="del-btn" onclick="removeService(${i})">Delete</button></div>
+      <div class="two-col">
+        <div class="field"><label class="label">Icon (emoji)</label><input type="text" id="svc-icon-${i}" value="${s.icon || ''}" style="font-size:20px" /></div>
+        <div class="field"><label class="label">Title</label><input type="text" id="svc-title-${i}" value="${s.title || ''}" /></div>
+      </div>
+      <div class="field"><label class="label">Description</label><textarea id="svc-desc-${i}" rows="2">${s.description || ''}</textarea></div>
+    </div>`).join('');
+}
+
+function addService() {
+  const services = collectServices();
+  services.push({icon:'📌', title:'', description:''});
+  data.services = services;
+  fillServices();
+}
+
+function removeService(i) {
+  const s = collectServices();
+  s.splice(i, 1);
+  data.services = s;
+  fillServices();
+}
+
+function collectServices() {
+  const s = [];
+  let i = 0;
+  while (document.getElementById(`svc-${i}`)) {
+    s.push({
+      icon: document.getElementById(`svc-icon-${i}`).value,
+      title: document.getElementById(`svc-title-${i}`).value,
+      description: document.getElementById(`svc-desc-${i}`).value
+    });
+    i++;
+  }
+  return s;
+}
+
+function fillProcess() {
+  const steps = data.process || [];
+  const c = document.getElementById('process-container');
+  c.innerHTML = steps.map((s, i) => `
+    <div class="card" id="proc-${i}">
+      <div class="card-header"><div class="card-title">Step ${i+1}</div><button class="del-btn" onclick="removeProcessStep(${i})">Delete</button></div>
+      <div class="three-col">
+        <div class="field"><label class="label">Step Number</label><input type="text" id="proc-step-${i}" value="${s.step || ''}" placeholder="01" /></div>
+        <div class="field" style="grid-column:2/-1"><label class="label">Title</label><input type="text" id="proc-title-${i}" value="${s.title || ''}" /></div>
+      </div>
+      <div class="field"><label class="label">Description</label><textarea id="proc-desc-${i}" rows="2">${s.description || ''}</textarea></div>
+    </div>`).join('');
+}
+
+function addProcessStep() {
+  const steps = collectProcess();
+  steps.push({step: String(steps.length+1).padStart(2,'0'), title:'', description:''});
+  data.process = steps;
+  fillProcess();
+}
+
+function removeProcessStep(i) {
+  const steps = collectProcess();
+  steps.splice(i, 1);
+  data.process = steps;
+  fillProcess();
+}
+
+function collectProcess() {
+  const s = [];
+  let i = 0;
+  while (document.getElementById(`proc-${i}`)) {
+    s.push({
+      step: document.getElementById(`proc-step-${i}`).value,
+      title: document.getElementById(`proc-title-${i}`).value,
+      description: document.getElementById(`proc-desc-${i}`).value
+    });
+    i++;
+  }
+  return s;
+}
+
+function fillWork() {
+  const work = data.work || [];
+  const c = document.getElementById('work-container');
+  c.innerHTML = work.map((w, i) => {
+    const results = w.results || [];
+    return `
+    <div class="card" id="work-${i}">
+      <div class="card-header"><div class="card-title">Case Study ${i+1}</div><button class="del-btn" onclick="removeWorkCase(${i})">Delete</button></div>
+      <div class="two-col">
+        <div class="field"><label class="label">Category Label</label><input type="text" id="work-label-${i}" value="${w.label || ''}" placeholder="Restaurant / F&B" /></div>
+        <div class="field"><label class="label">Client / Project Name</label><input type="text" id="work-title-${i}" value="${w.title || ''}" /></div>
+      </div>
+      <div class="field"><label class="label">Challenge</label><textarea id="work-challenge-${i}" rows="2">${w.challenge || ''}</textarea></div>
+      <div class="field">
+        <label class="label">Results (one per line)</label>
+        <textarea id="work-results-${i}" rows="3">${results.join('\n')}</textarea>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function addWorkCase() {
+  const work = collectWork();
+  work.push({label:'', title:'', challenge:'', results:[]});
+  data.work = work;
+  fillWork();
+}
+
+function removeWorkCase(i) {
+  const work = collectWork();
+  work.splice(i, 1);
+  data.work = work;
+  fillWork();
+}
+
+function collectWork() {
+  const w = [];
+  let i = 0;
+  while (document.getElementById(`work-${i}`)) {
+    w.push({
+      label: document.getElementById(`work-label-${i}`).value,
+      title: document.getElementById(`work-title-${i}`).value,
+      challenge: document.getElementById(`work-challenge-${i}`).value,
+      results: document.getElementById(`work-results-${i}`).value.split('\n').map(s=>s.trim()).filter(Boolean)
+    });
+    i++;
+  }
+  return w;
+}
+
+function fillResults() {
+  const results = data.results || [];
+  const c = document.getElementById('results-container');
+  c.innerHTML = results.map((r, i) => `
+    <div class="card">
+      <div class="card-header"><div class="card-title">Result #${i+1}</div></div>
+      <div class="three-col">
+        <div class="field"><label class="label">Icon</label><input type="text" id="res-icon-${i}" value="${r.icon || ''}" style="font-size:20px" /></div>
+        <div class="field"><label class="label">Number / Value</label><input type="text" id="res-num-${i}" value="${r.number || ''}" /></div>
+        <div class="field" style="grid-column:span 1"></div>
+      </div>
+      <div class="field"><label class="label">Label Description</label><input type="text" id="res-label-${i}" value="${r.label || ''}" /></div>
+    </div>`).join('');
+}
+
+function fillTestimonial() {
+  const t = data.testimonial || {};
+  document.getElementById('testimonial-text').value = t.text || '';
+  document.getElementById('testimonial-author').value = t.author || '';
+}
+
+function fillContact() {
+  const c = data.contact || {};
+  document.getElementById('contact-email').value = c.email || '';
+  document.getElementById('contact-whatsapp').value = c.whatsapp || '';
+  document.getElementById('contact-instagram').value = c.instagram || '';
+  document.getElementById('contact-facebook').value = c.facebook || '';
+  document.getElementById('contact-linkedin').value = c.linkedin || '';
+  document.getElementById('contact-tiktok').value = c.tiktok || '';
+}
+
+// ── COLLECT ALL DATA ──────────────────────────────────────────────────────
+function collectAllData() {
+  data.hero = {
+    badge: document.getElementById('hero-badge').value,
+    title_line1: document.getElementById('hero-title1').value,
+    title_line2: document.getElementById('hero-title2').value,
+    subtitle: document.getElementById('hero-subtitle').value,
+    description: document.getElementById('hero-description').value
+  };
+
+  const statCount = (data.stats || []).length;
+  data.stats = Array.from({length: statCount}, (_, i) => ({
+    number: document.getElementById(`stat-num-${i}`)?.value || '',
+    label: document.getElementById(`stat-label-${i}`)?.value || ''
+  }));
+
+  data.about = {
+    paragraphs: getCurrentParagraphs(),
+    tags: aboutTags,
+    contact_info: {
+      location: document.getElementById('about-location').value,
+      email: document.getElementById('about-email').value,
+      phone: document.getElementById('about-phone').value
+    }
+  };
+
+  data.services = collectServices();
+  data.process = collectProcess();
+  data.work = collectWork();
+
+  const resCount = (data.results || []).length;
+  data.results = Array.from({length: resCount}, (_, i) => ({
+    icon: document.getElementById(`res-icon-${i}`)?.value || '',
+    number: document.getElementById(`res-num-${i}`)?.value || '',
+    label: document.getElementById(`res-label-${i}`)?.value || ''
+  }));
+
+  data.testimonial = {
+    text: document.getElementById('testimonial-text').value,
+    author: document.getElementById('testimonial-author').value
+  };
+
+  data.contact = {
+    email: document.getElementById('contact-email').value,
+    whatsapp: document.getElementById('contact-whatsapp').value,
+    instagram: document.getElementById('contact-instagram').value,
+    facebook: document.getElementById('contact-facebook').value,
+    linkedin: document.getElementById('contact-linkedin').value,
+    tiktok: document.getElementById('contact-tiktok').value
+  };
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast ' + type;
+  if (type) setTimeout(() => { el.className = 'toast'; }, 3500);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+// Load from localStorage if previously saved
+const saved = localStorage.getItem('ms_gh_config');
+if (saved) {
+  const cfg = JSON.parse(saved);
+  document.getElementById('gh-user').value = cfg.user || '';
+  document.getElementById('gh-repo').value = cfg.repo || '';
+  document.getElementById('gh-branch').value = cfg.branch || 'main';
+  document.getElementById('gh-path').value = cfg.path || 'portfolio.json';
+}
+
+// Auto-save GitHub config (not the token) to localStorage
+['gh-user','gh-repo','gh-branch','gh-path'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    localStorage.setItem('ms_gh_config', JSON.stringify({
+      user: document.getElementById('gh-user').value,
+      repo: document.getElementById('gh-repo').value,
+      branch: document.getElementById('gh-branch').value,
+      path: document.getElementById('gh-path').value
+    }));
+  });
+});
+</script>
+</body>
+</html>
